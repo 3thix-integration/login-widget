@@ -33,7 +33,6 @@ module.exports = {
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
     eqeqeq: 'warn',
-    'no-restricted-imports': ['warn', { patterns: ['../*'] }],
     'no-cond-assign': ['error', 'always'],
 
     'react/jsx-uses-react': 'off',

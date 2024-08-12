@@ -1,4 +1,6 @@
-import './index.css';
+import Login from '../components/Login';
+
+import './style.css';
 
 type Props = {
   callback: (token: string) => void;
@@ -7,7 +9,11 @@ type Props = {
 
 const Widget = ({ callback, url }: Props) => {
   console.info(callback, url);
-  return <div></div>;
+  return (
+    <div className="card">
+      <Login callback={callback} url={url} />
+    </div>
+  );
 };
 
 export default Widget;
