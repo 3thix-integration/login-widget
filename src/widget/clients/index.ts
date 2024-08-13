@@ -71,6 +71,15 @@ export function client(baseURL: string) {
     };
   };
 
+  const changePassword = async (pin: string, email: string, password: string): Promise<RespAPI<LoginSuccess>> => {
+    const response = await instance.put('/entity/user/password/update', { pin, email, password });
+
+    return {
+      status: response.status,
+      data: response.data,
+    };
+  };
+
   const pin = async (email: string): Promise<RespAPI<PinSuccess>> => {
     const response = await instance.post('/entity/user/auth/pin', { email });
 
@@ -99,5 +108,5 @@ export function client(baseURL: string) {
     };
   };
 
-  return { auth, pin, signUp };
+  return { auth, pin, signUp, changePassword };
 }

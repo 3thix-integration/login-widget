@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 
-import { GoogleOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, GoogleOutlined } from '@ant-design/icons';
 
 import { client } from '../../clients';
 import { LoginSuccess } from '../../clients/types';
@@ -12,20 +12,21 @@ type Props = {
 
 enum Step {
   LOGIN = 1,
+  CHANGE_PASSWORD,
   PIN,
 }
 
 const SignIn = ({ callback, url }: Props) => {
   const [step, setStep] = useState<Step>(Step.LOGIN);
   const apiRef = useRef(client(url));
-  const [form, setForm] = useState({ pin: '', email: '', password: '' });
+  const [form, setForm] = useState({ pin: '', email: '', password: '', new_password: '' });
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
     setForm((prevFormData) => ({ ...prevFormData, [name]: value }));
   }, []);
 
-  const submitLoginWithEmail = useCallback(
+  const requestPin = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
@@ -44,7 +45,18 @@ const SignIn = ({ callback, url }: Props) => {
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
-      const { data, status } = await apiRef.current.auth(form.pin, form.email, form.password);
+      let password = form.password;
+      if (form.new_password) {
+        password = form.new_password;
+        const { data, status } = await apiRef.current.changePassword(form.pin, form.email, form.new_password);
+        if (status !== 204) {
+          // TODO fails status
+          console.error(status, data);
+          return;
+        }
+      }
+
+      const { data, status } = await apiRef.current.auth(form.pin, form.email, password);
       if (status !== 200) {
         // TODO fails status
         console.error(status, data);
@@ -82,6 +94,53 @@ const SignIn = ({ callback, url }: Props) => {
     );
   }
 
+  if (step === Step.CHANGE_PASSWORD) {
+    return (
+      <div>
+        <div className="flex flex-row justify-between items-center mb-8">
+          <button className="text-[#fff] flex" onClick={() => setStep(Step.LOGIN)}>
+            <ArrowLeftOutlined className="mr-2" />
+          </button>
+          <h1 className="flex-1 text-[24px] text-center text-[#fff]">Redefine Password</h1>
+          <div className="flex"></div>
+        </div>
+
+        <form onSubmit={requestPin}>
+          <div className="mt-4">
+            <div className="text-[#68679d] ml-2">E-mail</div>
+            <input
+              required
+              name="email"
+              type="email"
+              placeholder="Type your email here"
+              className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="mt-4">
+            <div className="text-[#68679d] ml-2">New password</div>
+            <input
+              required
+              name="new_password"
+              type="password"
+              placeholder="Type your new password here"
+              className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+              onChange={handleChange}
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="mt-6 w-full py-[12px] rounded-[10px] bg-[#24D07E] text-lg font-[500] text-white"
+          >
+            Change my password
+          </button>
+        </form>
+      </div>
+    );
+  }
+
   return (
     <div>
       <h1 className="text-[24px] text-center text-[#fff]">Sign in with</h1>
@@ -94,7 +153,7 @@ const SignIn = ({ callback, url }: Props) => {
         <div className="text-[#9190c2] p-2">OR</div>
         <div className="flex-1 bg-[#9190c2] h-[1px]"></div>
       </div>
-      <form onSubmit={submitLoginWithEmail}>
+      <form onSubmit={requestPin}>
         <input
           required
           name="email"
@@ -112,6 +171,9 @@ const SignIn = ({ callback, url }: Props) => {
           className="mt-6 outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
           onChange={handleChange}
         />
+        <button className="text-[#9190c2] mt-6 float-right underline" onClick={() => setStep(Step.CHANGE_PASSWORD)}>
+          Forget password
+        </button>
 
         <button
           type="submit"
