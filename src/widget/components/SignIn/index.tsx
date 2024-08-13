@@ -18,7 +18,7 @@ enum Step {
 const SignIn = ({ callback, url }: Props) => {
   const [step, setStep] = useState<Step>(Step.LOGIN);
   const apiRef = useRef(client(url));
-  const [form, setForm] = useState({ pin: '', email: '', passwrod: '' });
+  const [form, setForm] = useState({ pin: '', email: '', password: '' });
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
@@ -44,7 +44,7 @@ const SignIn = ({ callback, url }: Props) => {
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
-      const { data, status } = await apiRef.current.login(form.email, form.email, form.passwrod);
+      const { data, status } = await apiRef.current.auth(form.pin, form.email, form.password);
       if (status !== 200) {
         // TODO fails status
         console.error(status, data);
@@ -59,12 +59,14 @@ const SignIn = ({ callback, url }: Props) => {
   if (step === Step.PIN) {
     return (
       <div>
+        <h1 className="text-[24px] text-center text-[#fff]">Althorization pin</h1>
+        <h1 className="text-[18px] text-center text-[#fff]">We sent an email with your pin</h1>
         <form onSubmit={handleLoginWithEmail}>
           <input
             required
             name="pin"
             type="text"
-            placeholder="PIN"
+            placeholder="Type the PIN here"
             className="mt-6 outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
             onChange={handleChange}
           />
@@ -82,6 +84,7 @@ const SignIn = ({ callback, url }: Props) => {
 
   return (
     <div>
+      <h1 className="text-[24px] text-center text-[#fff]">Sign in with</h1>
       <button className="mt-6 w-full py-[12px] rounded-[10px] bg-[#4c8bf5] text-lg font-[500] text-white flex justify-center items-center">
         <GoogleOutlined className="mr-2" />
         Enter with Google

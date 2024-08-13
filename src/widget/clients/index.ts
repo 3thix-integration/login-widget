@@ -58,8 +58,12 @@ export function client(baseURL: string) {
     }
   );
 
-  const login = async (pin: string, email: string, password: string): Promise<RespAPI<LoginSuccess>> => {
-    const response = await instance.post('/entity/user/auth', { pin, email, password });
+  const auth = async (pin: string, email: string, password: string): Promise<RespAPI<LoginSuccess>> => {
+    const response = await instance.post(
+      '/entity/user/auth',
+      { pin, email, password },
+      { headers: { 'Accept-version': 'v2' } }
+    );
 
     return {
       status: response.status,
@@ -76,5 +80,24 @@ export function client(baseURL: string) {
     };
   };
 
-  return { login, pin };
+  const signUp = async (
+    first_name: string,
+    last_name: string,
+    email: string,
+    password: string
+  ): Promise<RespAPI<PinSuccess>> => {
+    const response = await instance.post('/entity/user/sign-up', {
+      first_name,
+      last_name,
+      email,
+      password,
+    });
+
+    return {
+      status: response.status,
+      data: response.data,
+    };
+  };
+
+  return { auth, pin, signUp };
 }

@@ -24,11 +24,18 @@ const Widget = ({ callback, url }: Props) => {
         <>
           <SignIn callback={callback} url={url} />
           <button className="text-[#9190c2] mt-6 text-center w-full underline" onClick={() => setPage(Page.SignUp)}>
-            Create a new account
+            create a new account
           </button>
         </>
       )}
-      {page === Page.SignUp && <SignUp success={() => setPage(Page.SignIn)} url={url} />}
+      {page === Page.SignUp && (
+        <>
+          <SignUp success={() => setPage(Page.SignIn)} url={url} />
+          <button className="text-[#9190c2] mt-6 text-center w-full underline" onClick={() => setPage(Page.SignIn)}>
+            sign in with an existing account
+          </button>
+        </>
+      )}
     </div>
   );
 };
