@@ -1,14 +1,17 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 
-import { client } from '../../clients';
+import { PinSuccess, RespAPI } from '../../clients/types';
 
 type Props = {
   success: () => void;
-  url: string;
+  api: apiClient;
 };
 
-const SignUp = ({ success, url }: Props) => {
-  const apiRef = useRef(client(url));
+interface apiClient {
+  signUp: (first_name: string, last_name: string, email: string, password: string) => Promise<RespAPI<PinSuccess>>;
+}
+
+const SignUp = ({ success, api }: Props) => {
   const [form, setForm] = useState({ first_name: '', last_name: '', email: '', password: '' });
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -20,7 +23,7 @@ const SignUp = ({ success, url }: Props) => {
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
-      const { data, status } = await apiRef.current.signUp(form.first_name, form.last_name, form.email, form.password);
+      const { data, status } = await api.signUp(form.first_name, form.last_name, form.email, form.password);
       if (status !== 201) {
         // TODO fails status
         console.error(status, data);
@@ -29,7 +32,7 @@ const SignUp = ({ success, url }: Props) => {
 
       success();
     },
-    [form, success]
+    [api, form, success]
   );
 
   return (

@@ -1,14 +1,19 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { ArrowLeftOutlined, GoogleOutlined } from '@ant-design/icons';
 
-import { client } from '../../clients';
-import { LoginSuccess } from '../../clients/types';
+import { LoginSuccess, PinSuccess, RespAPI } from '../../clients/types';
 
 type Props = {
   callback: (token: string) => void;
-  url: string;
+  api: apiClient;
 };
+
+interface apiClient {
+  pin: (email: string) => Promise<RespAPI<PinSuccess>>;
+  changePassword: (pin: string, email: string, password: string) => Promise<RespAPI<LoginSuccess>>;
+  auth: (pin: string, email: string, password: string) => Promise<RespAPI<LoginSuccess>>;
+}
 
 enum Step {
   LOGIN = 1,
@@ -16,9 +21,8 @@ enum Step {
   PIN,
 }
 
-const SignIn = ({ callback, url }: Props) => {
+const SignIn = ({ callback, api }: Props) => {
   const [step, setStep] = useState<Step>(Step.LOGIN);
-  const apiRef = useRef(client(url));
   const [form, setForm] = useState({ pin: '', email: '', password: '', new_password: '' });
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -30,7 +34,7 @@ const SignIn = ({ callback, url }: Props) => {
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
-      const { data, status } = await apiRef.current.pin(form.email);
+      const { data, status } = await api.pin(form.email);
       if (status !== 201) {
         // TODO fails status
         console.error(status, data);
@@ -38,7 +42,7 @@ const SignIn = ({ callback, url }: Props) => {
       }
       setStep(Step.PIN);
     },
-    [form]
+    [form, api]
   );
 
   const handleLoginWithEmail = useCallback(
@@ -48,7 +52,7 @@ const SignIn = ({ callback, url }: Props) => {
       let password = form.password;
       if (form.new_password) {
         password = form.new_password;
-        const { data, status } = await apiRef.current.changePassword(form.pin, form.email, form.new_password);
+        const { data, status } = await api.changePassword(form.pin, form.email, form.new_password);
         if (status !== 204) {
           // TODO fails status
           console.error(status, data);
@@ -56,7 +60,7 @@ const SignIn = ({ callback, url }: Props) => {
         }
       }
 
-      const { data, status } = await apiRef.current.auth(form.pin, form.email, password);
+      const { data, status } = await api.auth(form.pin, form.email, password);
       if (status !== 200) {
         // TODO fails status
         console.error(status, data);
@@ -65,7 +69,7 @@ const SignIn = ({ callback, url }: Props) => {
       const sucess = data as LoginSuccess;
       callback(sucess.token);
     },
-    [callback, form]
+    [callback, form, api]
   );
 
   if (step === Step.PIN) {
@@ -171,7 +175,11 @@ const SignIn = ({ callback, url }: Props) => {
           className="mt-6 outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
           onChange={handleChange}
         />
-        <button className="text-[#9190c2] mt-6 float-right underline" onClick={() => setStep(Step.CHANGE_PASSWORD)}>
+        <button
+          className="text-[#9190c2] mt-6 float-right underline"
+          type="button"
+          onClick={() => setStep(Step.CHANGE_PASSWORD)}
+        >
           Forget password
         </button>
 

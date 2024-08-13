@@ -9,3 +9,8 @@ export type LoginSuccess = {
 export type PinSuccess = {
   expire_at: string;
 };
+
+export type RespAPI<Success> = {
+  status: number;
+  data: Success | Error3thix;
+};

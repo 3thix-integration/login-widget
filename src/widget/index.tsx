@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
+import { client } from './clients';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 
@@ -17,12 +18,13 @@ enum Page {
 
 const Widget = ({ callback, url }: Props) => {
   const [page, setPage] = useState<Page>(Page.SignIn);
+  const apiRef = useRef(client(url));
 
   return (
     <div className="card">
       {page === Page.SignIn && (
         <>
-          <SignIn callback={callback} url={url} />
+          <SignIn callback={callback} api={apiRef.current} />
           <button className="text-[#9190c2] mt-10 text-center w-full underline" onClick={() => setPage(Page.SignUp)}>
             create a new account
           </button>
@@ -30,7 +32,7 @@ const Widget = ({ callback, url }: Props) => {
       )}
       {page === Page.SignUp && (
         <>
-          <SignUp success={() => setPage(Page.SignIn)} url={url} />
+          <SignUp success={() => setPage(Page.SignIn)} api={apiRef.current} />
           <button className="text-[#9190c2] mt-10 text-center w-full underline" onClick={() => setPage(Page.SignIn)}>
             sign in with an existing account
           </button>

@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 
-import { Error3thix, LoginSuccess, PinSuccess } from './types';
+import { Error3thix, LoginSuccess, PinSuccess, RespAPI } from './types';
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_3THIX_API,
@@ -26,11 +26,6 @@ instance.interceptors.response.use(
     };
   }
 );
-
-type RespAPI<Success> = {
-  status: number;
-  data: Success | Error3thix;
-};
 
 export function client(baseURL: string) {
   const instance = axios.create({
