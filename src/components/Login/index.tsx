@@ -10,9 +10,15 @@ type Props = {
   url: string;
 };
 
+enum Step {
+  LOGIN = 1,
+  PIN,
+}
+
 const Login = ({ callback, url }: Props) => {
+  const [step, setStep] = useState<Step>(Step.LOGIN);
   const apiRef = useRef(client(url));
-  const [form, setForm] = useState({ email: '', passwrod: '' });
+  const [form, setForm] = useState({ pin: '', email: '', passwrod: '' });
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
@@ -20,6 +26,21 @@ const Login = ({ callback, url }: Props) => {
   }, []);
 
   const submitLoginWithEmail = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+
+      const { data, status } = await apiRef.current.pin(form.email);
+      if (status !== 201) {
+        // TODO fails status
+        console.error(status, data);
+        return;
+      }
+      setStep(Step.PIN);
+    },
+    [form]
+  );
+
+  const handleLoginWithEmail = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
@@ -34,6 +55,30 @@ const Login = ({ callback, url }: Props) => {
     },
     [callback, form]
   );
+
+  if (step === Step.PIN) {
+    return (
+      <div>
+        <form onSubmit={handleLoginWithEmail}>
+          <input
+            required
+            name="pin"
+            type="text"
+            placeholder="PIN"
+            className="mt-6 outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            onChange={handleChange}
+          />
+
+          <button
+            type="submit"
+            className="mt-6 w-full py-[12px] rounded-[10px] bg-[#24D07E] text-lg font-[500] text-white"
+          >
+            Validate
+          </button>
+        </form>
+      </div>
+    );
+  }
 
   return (
     <div>

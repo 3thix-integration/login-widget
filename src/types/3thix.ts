@@ -5,3 +5,7 @@ export interface Error3thix {
 export type LoginSuccess = {
   token: string;
 };
+
+export type PinSuccess = {
+  expire_at: string;
+};

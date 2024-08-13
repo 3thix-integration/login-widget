@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 
-import { Error3thix, LoginSuccess } from '../types/3thix';
+import { Error3thix, LoginSuccess, PinSuccess } from '../types/3thix';
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_3THIX_API,
@@ -58,8 +58,8 @@ export function client(baseURL: string) {
     }
   );
 
-  const login = async (pin: string, login: string, password: string): Promise<RespAPI<LoginSuccess>> => {
-    const response = await instance.post('/entity/user/auth', { pin, login, password });
+  const login = async (pin: string, email: string, password: string): Promise<RespAPI<LoginSuccess>> => {
+    const response = await instance.post('/entity/user/auth', { pin, email, password });
 
     return {
       status: response.status,
@@ -67,5 +67,14 @@ export function client(baseURL: string) {
     };
   };
 
-  return { login };
+  const pin = async (email: string): Promise<RespAPI<PinSuccess>> => {
+    const response = await instance.post('/entity/user/auth/pin', { email });
+
+    return {
+      status: response.status,
+      data: response.data,
+    };
+  };
+
+  return { login, pin };
 }
