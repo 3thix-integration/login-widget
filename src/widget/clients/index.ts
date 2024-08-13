@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 
-import { Error3thix, LoginSuccess, PinSuccess } from '../types/3thix';
+import { Error3thix, LoginSuccess, PinSuccess } from './types';
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_3THIX_API,

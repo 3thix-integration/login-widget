@@ -2,8 +2,8 @@ import { useCallback, useRef, useState } from 'react';
 
 import { GoogleOutlined } from '@ant-design/icons';
 
-import { client } from '../../clients/3thix';
-import { LoginSuccess } from '../../types/3thix';
+import { client } from '../../clients';
+import { LoginSuccess } from '../../clients/types';
 
 type Props = {
   callback: (token: string) => void;
@@ -15,7 +15,7 @@ enum Step {
   PIN,
 }
 
-const Login = ({ callback, url }: Props) => {
+const SignIn = ({ callback, url }: Props) => {
   const [step, setStep] = useState<Step>(Step.LOGIN);
   const apiRef = useRef(client(url));
   const [form, setForm] = useState({ pin: '', email: '', passwrod: '' });
@@ -44,7 +44,7 @@ const Login = ({ callback, url }: Props) => {
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
-      const { data, status } = await apiRef.current.login('pin', form.email, form.passwrod);
+      const { data, status } = await apiRef.current.login(form.email, form.email, form.passwrod);
       if (status !== 200) {
         // TODO fails status
         console.error(status, data);
@@ -121,4 +121,4 @@ const Login = ({ callback, url }: Props) => {
   );
 };
 
-export default Login;
+export default SignIn;

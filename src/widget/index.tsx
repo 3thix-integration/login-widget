@@ -1,4 +1,7 @@
-import Login from '../components/Login';
+import { useState } from 'react';
+
+import SignIn from './components/SignIn';
+import SignUp from './components/SignUp';
 
 import './style.css';
 
@@ -7,11 +10,25 @@ type Props = {
   url: string;
 };
 
+enum Page {
+  SignIn = 1,
+  SignUp,
+}
+
 const Widget = ({ callback, url }: Props) => {
-  console.info(callback, url);
+  const [page, setPage] = useState<Page>(Page.SignIn);
+
   return (
     <div className="card">
-      <Login callback={callback} url={url} />
+      {page === Page.SignIn && (
+        <>
+          <SignIn callback={callback} url={url} />
+          <button className="text-[#9190c2] mt-6 text-center w-full underline" onClick={() => setPage(Page.SignUp)}>
+            Create a new account
+          </button>
+        </>
+      )}
+      {page === Page.SignUp && <SignUp success={() => setPage(Page.SignIn)} url={url} />}
     </div>
   );
 };
