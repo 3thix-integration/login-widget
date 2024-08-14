@@ -27,9 +27,9 @@ instance.interceptors.response.use(
   }
 );
 
-export function client(baseURL: string) {
+export function client(baseUrl: string, callbackUrl: string) {
   const instance = axios.create({
-    baseURL: baseURL,
+    baseURL: baseUrl,
     timeout: 10_000,
     headers: {},
   });
@@ -103,5 +103,11 @@ export function client(baseURL: string) {
     };
   };
 
-  return { auth, pin, signUp, changePassword };
+  const signInGoogle = () => {
+    const url = new URL(`${baseUrl}/entity/user/auth/google/signin`);
+    url.searchParams.append('callbackUrl', callbackUrl);
+    window.location.replace(url.href);
+  };
+
+  return { auth, pin, signUp, changePassword, signInGoogle };
 }

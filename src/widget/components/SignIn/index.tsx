@@ -13,6 +13,7 @@ interface apiClient {
   pin: (email: string) => Promise<RespAPI<PinSuccess>>;
   changePassword: (pin: string, email: string, password: string) => Promise<RespAPI<LoginSuccess>>;
   auth: (pin: string, email: string, password: string) => Promise<RespAPI<LoginSuccess>>;
+  signInGoogle: () => void;
 }
 
 enum Step {
@@ -148,7 +149,10 @@ const SignIn = ({ callback, api }: Props) => {
   return (
     <div>
       <h1 className="text-[24px] text-center text-[#fff]">Sign in with</h1>
-      <button className="mt-6 w-full py-[12px] rounded-[10px] bg-[#4c8bf5] text-lg font-[500] text-white flex justify-center items-center">
+      <button
+        className="mt-6 w-full py-[12px] rounded-[10px] bg-[#4c8bf5] text-lg font-[500] text-white flex justify-center items-center"
+        onClick={api.signInGoogle}
+      >
         <GoogleOutlined className="mr-2" />
         Enter with Google
       </button>

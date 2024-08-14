@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { client } from './clients';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import { deleteTokenFromURL, getTokenFromURL } from './utils';
 
 import './style.css';
 
@@ -16,9 +17,19 @@ enum Page {
   SignUp,
 }
 
+let token = getTokenFromURL();
+
 const Widget = ({ callback, url }: Props) => {
   const [page, setPage] = useState<Page>(Page.SignIn);
-  const apiRef = useRef(client(url));
+  const apiRef = useRef(client(url, 'http://localhost:3000'));
+
+  useEffect(() => {
+    if (token) {
+      callback(token);
+      token = null;
+      deleteTokenFromURL();
+    }
+  }, [callback]);
 
   return (
     <div className="card">
