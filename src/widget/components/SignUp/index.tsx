@@ -12,7 +12,7 @@ interface apiClient {
 }
 
 const SignUp = ({ success, api }: Props) => {
-  const [form, setForm] = useState({ first_name: '', last_name: '', email: '', password: '' });
+  const [form, setForm] = useState({ first_name: '', last_name: '', email: '', password: '', repeat_password: '' });
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
@@ -83,6 +83,19 @@ const SignUp = ({ success, api }: Props) => {
             type="password"
             placeholder="Type your password here"
             className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="mt-4">
+          <div className="text-[#68679d] ml-2">Repeat New password</div>
+          <input
+            required
+            name="repeat_password"
+            type="password"
+            placeholder="Type your new password here"
+            className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            style={{ borderColor: form.password !== form.repeat_password ? 'red' : undefined }}
             onChange={handleChange}
           />
         </div>

@@ -24,7 +24,7 @@ enum Step {
 
 const SignIn = ({ callback, api }: Props) => {
   const [step, setStep] = useState<Step>(Step.LOGIN);
-  const [form, setForm] = useState({ pin: '', email: '', password: '', new_password: '' });
+  const [form, setForm] = useState({ pin: '', email: '', password: '', new_password: '', repeat_new_password: '' });
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
@@ -131,6 +131,19 @@ const SignIn = ({ callback, api }: Props) => {
               type="password"
               placeholder="Type your new password here"
               className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="mt-4">
+            <div className="text-[#68679d] ml-2">Repeat New password</div>
+            <input
+              required
+              name="repeat_new_password"
+              type="password"
+              placeholder="Type your new password here"
+              className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+              style={{ borderColor: form.new_password !== form.repeat_new_password ? 'red' : undefined }}
               onChange={handleChange}
             />
           </div>
