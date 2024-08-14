@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { ArrowLeftOutlined, GoogleOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, EyeFilled, EyeInvisibleFilled, GoogleOutlined } from '@ant-design/icons';
 
 import { LoginSuccess, PinSuccess, RespAPI } from '../../clients/types';
 
@@ -25,6 +25,14 @@ enum Step {
 const SignIn = ({ callback, api }: Props) => {
   const [step, setStep] = useState<Step>(Step.LOGIN);
   const [form, setForm] = useState({ pin: '', email: '', password: '', new_password: '', repeat_new_password: '' });
+  const [showPassword, setShowPassword] = useState({
+    password: false,
+    new_password: false,
+    repeat_new_password: false,
+  });
+
+  const toggleShowPassword = (field: 'password' | 'new_password' | 'repeat_new_password') => () =>
+    setShowPassword((old) => ({ ...old, [field]: !old[field] }));
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
@@ -125,27 +133,45 @@ const SignIn = ({ callback, api }: Props) => {
 
           <div className="mt-4">
             <div className="text-[#68679d] ml-2">New password</div>
-            <input
-              required
-              name="new_password"
-              type="password"
-              placeholder="Type your new password here"
-              className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
-              onChange={handleChange}
-            />
+            <div className="relative mt-6">
+              <button
+                className="absolute text-[#9190c2] top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
+                type="button"
+                onClick={toggleShowPassword('new_password')}
+              >
+                {showPassword.new_password ? <EyeInvisibleFilled /> : <EyeFilled />}
+              </button>
+              <input
+                required
+                name="new_password"
+                type={showPassword.new_password ? 'text' : 'password'}
+                placeholder="Type your new password here"
+                className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+                onChange={handleChange}
+              />
+            </div>
           </div>
 
           <div className="mt-4">
             <div className="text-[#68679d] ml-2">Repeat New password</div>
-            <input
-              required
-              name="repeat_new_password"
-              type="password"
-              placeholder="Type your new password here"
-              className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
-              style={{ borderColor: form.new_password !== form.repeat_new_password ? 'red' : undefined }}
-              onChange={handleChange}
-            />
+            <div className="relative mt-6">
+              <button
+                className="absolute text-[#9190c2] top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
+                type="button"
+                onClick={toggleShowPassword('repeat_new_password')}
+              >
+                {showPassword.repeat_new_password ? <EyeInvisibleFilled /> : <EyeFilled />}
+              </button>
+              <input
+                required
+                name="repeat_new_password"
+                type={showPassword.repeat_new_password ? 'text' : 'password'}
+                placeholder="Type your new password here"
+                className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+                style={{ borderColor: form.new_password !== form.repeat_new_password ? 'red' : undefined }}
+                onChange={handleChange}
+              />
+            </div>
           </div>
 
           <button
@@ -184,14 +210,24 @@ const SignIn = ({ callback, api }: Props) => {
           onChange={handleChange}
         />
 
-        <input
-          required
-          name="password"
-          type="password"
-          placeholder="Type your password here"
-          className="mt-6 outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
-          onChange={handleChange}
-        />
+        <div className="relative mt-6">
+          <button
+            className="absolute text-[#9190c2] top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
+            type="button"
+            onClick={toggleShowPassword('password')}
+          >
+            {showPassword.password ? <EyeInvisibleFilled /> : <EyeFilled />}
+          </button>
+          <input
+            required
+            name="password"
+            type={showPassword.password ? 'text' : 'password'}
+            placeholder="Type your password here"
+            className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            onChange={handleChange}
+          />
+        </div>
+
         <button
           className="text-[#9190c2] mt-6 float-right underline"
           type="button"
