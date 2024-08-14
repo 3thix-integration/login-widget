@@ -133,7 +133,7 @@ const SignIn = ({ callback, api }: Props) => {
 
           <div className="mt-4">
             <div className="text-[#68679d] ml-2">New password</div>
-            <div className="relative mt-6">
+            <div className="relative">
               <button
                 className="absolute text-[#9190c2] top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
                 type="button"
@@ -154,7 +154,7 @@ const SignIn = ({ callback, api }: Props) => {
 
           <div className="mt-4">
             <div className="text-[#68679d] ml-2">Repeat New password</div>
-            <div className="relative mt-6">
+            <div className="relative">
               <button
                 className="absolute text-[#9190c2] top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
                 type="button"
