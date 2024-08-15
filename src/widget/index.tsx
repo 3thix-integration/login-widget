@@ -21,7 +21,7 @@ let token = getTokenFromURL();
 
 const Widget = ({ callback, url }: Props) => {
   const [page, setPage] = useState<Page>(Page.SignIn);
-  const apiRef = useRef(client(url, 'http://localhost:3000'));
+  const apiRef = useRef(client(url, window.location.href));
 
   useEffect(() => {
     if (token) {
