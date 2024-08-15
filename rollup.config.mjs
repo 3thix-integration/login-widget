@@ -6,6 +6,7 @@ import typescript from 'rollup-plugin-typescript2';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
+
 export default {
   input: 'src/widget/index.tsx',
   output: [
@@ -23,7 +24,7 @@ export default {
   ],
   plugins: [
     external(),
-    resolve(),
+    resolve({ browser: true }),
     commonjs(),
     typescript({ tsconfig: './tsconfig.json' }),
     postcss(),
