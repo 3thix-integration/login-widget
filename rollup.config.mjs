@@ -1,5 +1,6 @@
-import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+import external from 'rollup-plugin-peer-deps-external';
 import postcss from 'rollup-plugin-postcss';
+import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 
 import commonjs from '@rollup/plugin-commonjs';
@@ -21,14 +22,12 @@ export default {
     },
   ],
   plugins: [
-    peerDepsExternal(),
-    resolve({
-      browser: true,
-      preferBuiltins: false,
-    }),
+    external(),
+    resolve(),
     commonjs(),
-    json(),
-    typescript({ useTsconfigDeclarationDir: true }),
+    typescript({ tsconfig: './tsconfig.json' }),
     postcss(),
+    terser(),
+    json(),
   ],
 };
