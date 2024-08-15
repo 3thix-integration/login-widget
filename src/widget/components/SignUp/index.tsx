@@ -1,8 +1,8 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { EyeFilled, EyeInvisibleFilled } from '@ant-design/icons';
 
-import { PinSuccess, RespAPI } from '../../clients/types';
+import { Error3thix, PinSuccess, RespAPI } from '../../clients/types';
 
 type Props = {
   success: () => void;
@@ -14,6 +14,7 @@ interface apiClient {
 }
 
 const SignUp = ({ success, api }: Props) => {
+  const [errorMsg, setErrorMsg] = useState<string>();
   const [form, setForm] = useState({ first_name: '', last_name: '', email: '', password: '', repeat_password: '' });
   const [showPassword, setShowPassword] = useState({
     password: false,
@@ -34,8 +35,8 @@ const SignUp = ({ success, api }: Props) => {
 
       const { data, status } = await api.signUp(form.first_name, form.last_name, form.email, form.password);
       if (status !== 201) {
-        // TODO fails status
         console.error(status, data);
+        setErrorMsg((data as Error3thix).message);
         return;
       }
 
@@ -43,6 +44,15 @@ const SignUp = ({ success, api }: Props) => {
     },
     [api, form, success]
   );
+
+  const errorComponent = useMemo(() => {
+    if (!errorMsg) return null;
+    return (
+      <div className="mt-6 w-full text-center border-[2px] border-[#f37575] text-[#fa4747] bg-[#ffb8b8] p-[10px] rounded-[12px]">
+        <p>{errorMsg}</p>
+      </div>
+    );
+  }, [errorMsg]);
 
   return (
     <div>
@@ -87,13 +97,6 @@ const SignUp = ({ success, api }: Props) => {
         <div className="mt-4">
           <div className="text-[#68679d] ml-2">Password</div>
           <div className="relative">
-            <button
-              className="absolute text-[#9190c2] top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
-              type="button"
-              onClick={toggleShowPassword('password')}
-            >
-              {showPassword.password ? <EyeInvisibleFilled /> : <EyeFilled />}
-            </button>
             <input
               required
               name="password"
@@ -102,19 +105,19 @@ const SignUp = ({ success, api }: Props) => {
               className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
               onChange={handleChange}
             />
+            <button
+              className="absolute text-[#9190c2] top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
+              type="button"
+              onClick={toggleShowPassword('password')}
+            >
+              {showPassword.password ? <EyeInvisibleFilled /> : <EyeFilled />}
+            </button>
           </div>
         </div>
 
         <div className="mt-4">
           <div className="text-[#68679d] ml-2">Repeat New password</div>
           <div className="relative">
-            <button
-              className="absolute text-[#9190c2] top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
-              type="button"
-              onClick={toggleShowPassword('repeat_password')}
-            >
-              {showPassword.repeat_password ? <EyeInvisibleFilled /> : <EyeFilled />}
-            </button>
             <input
               required
               name="repeat_password"
@@ -124,8 +127,17 @@ const SignUp = ({ success, api }: Props) => {
               style={{ borderColor: form.password !== form.repeat_password ? 'red' : undefined }}
               onChange={handleChange}
             />
+            <button
+              className="absolute text-[#9190c2] top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
+              type="button"
+              onClick={toggleShowPassword('repeat_password')}
+            >
+              {showPassword.repeat_password ? <EyeInvisibleFilled /> : <EyeFilled />}
+            </button>
           </div>
         </div>
+
+        {errorComponent}
 
         <button
           type="submit"

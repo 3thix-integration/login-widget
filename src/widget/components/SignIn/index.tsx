@@ -1,8 +1,8 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { ArrowLeftOutlined, EyeFilled, EyeInvisibleFilled, GoogleOutlined } from '@ant-design/icons';
 
-import { LoginSuccess, PinSuccess, RespAPI } from '../../clients/types';
+import { Error3thix, LoginSuccess, PinSuccess, RespAPI } from '../../clients/types';
 
 type Props = {
   callback: (token: string) => void;
@@ -24,6 +24,7 @@ enum Step {
 
 const SignIn = ({ callback, api }: Props) => {
   const [step, setStep] = useState<Step>(Step.LOGIN);
+  const [errorMsg, setErrorMsg] = useState<string>();
   const [form, setForm] = useState({ pin: '', email: '', password: '', new_password: '', repeat_new_password: '' });
   const [showPassword, setShowPassword] = useState({
     password: false,
@@ -45,10 +46,11 @@ const SignIn = ({ callback, api }: Props) => {
 
       const { data, status } = await api.pin(form.email);
       if (status !== 201) {
-        // TODO fails status
         console.error(status, data);
+        setErrorMsg((data as Error3thix).message);
         return;
       }
+      setErrorMsg(undefined);
       setStep(Step.PIN);
     },
     [form, api]
@@ -63,16 +65,16 @@ const SignIn = ({ callback, api }: Props) => {
         password = form.new_password;
         const { data, status } = await api.changePassword(form.pin, form.email, form.new_password);
         if (status !== 204) {
-          // TODO fails status
           console.error(status, data);
+          setErrorMsg((data as Error3thix).message);
           return;
         }
       }
 
       const { data, status } = await api.auth(form.pin, form.email, password);
       if (status !== 200) {
-        // TODO fails status
         console.error(status, data);
+        setErrorMsg((data as Error3thix).message);
         return;
       }
       const sucess = data as LoginSuccess;
@@ -80,6 +82,15 @@ const SignIn = ({ callback, api }: Props) => {
     },
     [callback, form, api]
   );
+
+  const errorComponent = useMemo(() => {
+    if (!errorMsg) return null;
+    return (
+      <div className="mt-6 w-full border-[2px] text-center border-[#f37575] text-[#fa4747] bg-[#ffb8b8] p-[10px] rounded-[12px]">
+        <p>{errorMsg}</p>
+      </div>
+    );
+  }, [errorMsg]);
 
   if (step === Step.PIN) {
     return (
@@ -95,6 +106,8 @@ const SignIn = ({ callback, api }: Props) => {
             className="mt-6 outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
             onChange={handleChange}
           />
+
+          {errorComponent}
 
           <button
             type="submit"
@@ -134,13 +147,6 @@ const SignIn = ({ callback, api }: Props) => {
           <div className="mt-4">
             <div className="text-[#68679d] ml-2">New password</div>
             <div className="relative">
-              <button
-                className="absolute text-[#9190c2] top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
-                type="button"
-                onClick={toggleShowPassword('new_password')}
-              >
-                {showPassword.new_password ? <EyeInvisibleFilled /> : <EyeFilled />}
-              </button>
               <input
                 required
                 name="new_password"
@@ -149,19 +155,19 @@ const SignIn = ({ callback, api }: Props) => {
                 className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
                 onChange={handleChange}
               />
+              <button
+                className="absolute text-[#9190c2] top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
+                type="button"
+                onClick={toggleShowPassword('new_password')}
+              >
+                {showPassword.new_password ? <EyeInvisibleFilled /> : <EyeFilled />}
+              </button>
             </div>
           </div>
 
           <div className="mt-4">
             <div className="text-[#68679d] ml-2">Repeat New password</div>
             <div className="relative">
-              <button
-                className="absolute text-[#9190c2] top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
-                type="button"
-                onClick={toggleShowPassword('repeat_new_password')}
-              >
-                {showPassword.repeat_new_password ? <EyeInvisibleFilled /> : <EyeFilled />}
-              </button>
               <input
                 required
                 name="repeat_new_password"
@@ -171,8 +177,17 @@ const SignIn = ({ callback, api }: Props) => {
                 style={{ borderColor: form.new_password !== form.repeat_new_password ? 'red' : undefined }}
                 onChange={handleChange}
               />
+              <button
+                className="absolute text-[#9190c2] top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
+                type="button"
+                onClick={toggleShowPassword('repeat_new_password')}
+              >
+                {showPassword.repeat_new_password ? <EyeInvisibleFilled /> : <EyeFilled />}
+              </button>
             </div>
           </div>
+
+          {errorComponent}
 
           <button
             type="submit"
@@ -211,13 +226,6 @@ const SignIn = ({ callback, api }: Props) => {
         />
 
         <div className="relative mt-6">
-          <button
-            className="absolute text-[#9190c2] top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
-            type="button"
-            onClick={toggleShowPassword('password')}
-          >
-            {showPassword.password ? <EyeInvisibleFilled /> : <EyeFilled />}
-          </button>
           <input
             required
             name="password"
@@ -226,15 +234,22 @@ const SignIn = ({ callback, api }: Props) => {
             className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
             onChange={handleChange}
           />
+          <button
+            className="absolute text-[#9190c2] top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
+            type="button"
+            onClick={toggleShowPassword('password')}
+          >
+            {showPassword.password ? <EyeInvisibleFilled /> : <EyeFilled />}
+          </button>
         </div>
 
-        <button
-          className="text-[#9190c2] mt-6 float-right underline"
-          type="button"
-          onClick={() => setStep(Step.CHANGE_PASSWORD)}
-        >
-          Forget password
-        </button>
+        <div className="flex justify-end flex-row mt-6">
+          <button className="text-[#9190c2] underline" type="button" onClick={() => setStep(Step.CHANGE_PASSWORD)}>
+            Forget password
+          </button>
+        </div>
+
+        {errorComponent}
 
         <button
           type="submit"
