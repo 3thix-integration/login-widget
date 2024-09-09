@@ -95,7 +95,7 @@ const SignIn = ({ callback, api }: Props) => {
   if (step === Step.PIN) {
     return (
       <div>
-        <h1 className="text-[24px] text-center text-[#fff]">Althorization pin</h1>
+        <h1 className="text-[24px] text-center text-[#fff]">Authorization pin</h1>
         <h1 className="text-[18px] text-center text-[#fff]">We sent an email with your pin</h1>
         <form onSubmit={handleLoginWithEmail}>
           <input
