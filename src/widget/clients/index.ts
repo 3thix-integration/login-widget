@@ -2,31 +2,6 @@ import axios, { AxiosError } from 'axios';
 
 import { Error3thix, LoginSuccess, PinSuccess, RespAPI } from './types';
 
-const instance = axios.create({
-  baseURL: process.env.REACT_APP_3THIX_API,
-  timeout: 10_000,
-  headers: {},
-});
-
-instance.interceptors.response.use(
-  (response) => response,
-  (error: AxiosError): RespAPI<AxiosError> => {
-    const errorData = error.response?.data as Error3thix | undefined;
-    let errorMessage = error.message;
-
-    if (errorData && 'message' in errorData && 'details' in errorData) {
-      errorMessage = `${errorData.message}: ${errorData.details}`;
-    } else if (errorData && 'message' in errorData) {
-      errorMessage = errorData.message;
-    }
-
-    return {
-      status: error.response?.status || 500,
-      data: { message: errorMessage },
-    };
-  }
-);
-
 export function client(baseUrl: string, callbackUrl: string) {
   const instance = axios.create({
     baseURL: baseUrl,
