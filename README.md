@@ -19,7 +19,7 @@ and run ``yarn`` or ``npm install``.
 ```tsx
 import LoginWidget from 'login-3thix/dist';
 
-const url = "https://integration-api.3thix.com"
+const url = "https://sandbox-api.3thix.com"
 
 const YourComponent = () => {
   function handleCallback(token:string) {
