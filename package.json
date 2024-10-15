@@ -1,7 +1,9 @@
 {
-  "name": "login-widget",
+  "name": "3thix-login-widget",
   "version": "1.0.0",
-  "private": true,
+  "main":"dist/index.js",
+  "author":"3thix",
+  "homepage": "https://github.com/3thix/login-widget/blob/main/README.md",
   "files": [
     "build"
   ],
