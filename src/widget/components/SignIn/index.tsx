@@ -1,8 +1,9 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 
 import { ArrowLeftOutlined, EyeFilled, EyeInvisibleFilled, GoogleOutlined } from '@ant-design/icons';
 
 import { Error3thix, LoginSuccess, PinSuccess, RespAPI } from '../../clients/types';
+import { ThemeContext } from '../../contexts/theme';
 
 type Props = {
   callback: (token: string) => void;
@@ -23,6 +24,7 @@ enum Step {
 }
 
 const SignIn = ({ callback, api }: Props) => {
+  const theme = useContext(ThemeContext);
   const [step, setStep] = useState<Step>(Step.LOGIN);
   const [errorMsg, setErrorMsg] = useState<string>();
   const [form, setForm] = useState({ pin: '', email: '', password: '', new_password: '', repeat_new_password: '' });
@@ -95,15 +97,20 @@ const SignIn = ({ callback, api }: Props) => {
   if (step === Step.PIN) {
     return (
       <div>
-        <h1 className="text-[24px] text-center text-[#fff]">Authorization pin</h1>
-        <h1 className="text-[18px] text-center text-[#fff]">We sent an email with your pin</h1>
+        <h1 className="text-[24px] text-center" style={{ color: theme.TextColor }}>
+          Authorization pin
+        </h1>
+        <h1 className="text-[18px] text-center" style={{ color: theme.TextColor }}>
+          We sent an email with your pin
+        </h1>
         <form onSubmit={handleLoginWithEmail}>
           <input
             required
             name="pin"
             type="text"
             placeholder="Type the PIN here"
-            className="mt-6 outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            className="mt-6 outline-none w-full p-4 border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            style={{ color: theme.InputTextColor, backgroundColor: theme.InputBackground }}
             onChange={handleChange}
           />
 
@@ -111,7 +118,8 @@ const SignIn = ({ callback, api }: Props) => {
 
           <button
             type="submit"
-            className="mt-6 w-full py-[12px] rounded-[10px] bg-[#24D07E] text-lg font-[500] text-white"
+            className="mt-6 w-full py-[12px] rounded-[10px] text-lg font-[500]"
+            style={{ color: theme.ButtonTextColor, backgroundColor: theme.ButtonBackground }}
           >
             Validate
           </button>
@@ -124,39 +132,48 @@ const SignIn = ({ callback, api }: Props) => {
     return (
       <div>
         <div className="flex flex-row justify-between items-center mb-8">
-          <button className="text-[#fff] flex" onClick={() => setStep(Step.LOGIN)}>
+          <button className="flex" style={{ color: theme.TextColor }} onClick={() => setStep(Step.LOGIN)}>
             <ArrowLeftOutlined className="mr-2" />
           </button>
-          <h1 className="flex-1 text-[24px] text-center text-[#fff]">Redefine Password</h1>
+          <h1 className="flex-1 text-[24px] text-center" style={{ color: theme.TextColor }}>
+            Redefine Password
+          </h1>
           <div className="flex"></div>
         </div>
 
         <form onSubmit={requestPin}>
           <div className="mt-4">
-            <div className="text-[#68679d] ml-2">E-mail</div>
+            <div className="ml-2" style={{ color: theme.InputLabelColor }}>
+              E-mail
+            </div>
             <input
               required
               name="email"
               type="email"
               placeholder="Type your email here"
-              className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+              className="outline-none w-full p-4 border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+              style={{ color: theme.InputTextColor, backgroundColor: theme.InputBackground }}
               onChange={handleChange}
             />
           </div>
 
           <div className="mt-4">
-            <div className="text-[#68679d] ml-2">New password</div>
+            <div className="ml-2" style={{ color: theme.InputLabelColor }}>
+              New password
+            </div>
             <div className="relative">
               <input
                 required
                 name="new_password"
                 type={showPassword.new_password ? 'text' : 'password'}
                 placeholder="Type your new password here"
-                className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+                className="outline-none w-full p-4 border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+                style={{ color: theme.InputTextColor, backgroundColor: theme.InputBackground }}
                 onChange={handleChange}
               />
               <button
-                className="absolute text-[#9190c2] top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
+                className="absolute top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
+                style={{ color: theme.InputTextColor }}
                 type="button"
                 onClick={toggleShowPassword('new_password')}
               >
@@ -166,19 +183,26 @@ const SignIn = ({ callback, api }: Props) => {
           </div>
 
           <div className="mt-4">
-            <div className="text-[#68679d] ml-2">Repeat New password</div>
+            <div className="ml-2" style={{ color: theme.InputLabelColor }}>
+              Repeat New password
+            </div>
             <div className="relative">
               <input
                 required
                 name="repeat_new_password"
                 type={showPassword.repeat_new_password ? 'text' : 'password'}
                 placeholder="Type your new password here"
-                className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
-                style={{ borderColor: form.new_password !== form.repeat_new_password ? 'red' : undefined }}
+                className="outline-none w-full p-4 style={{ color: theme.InputPlaceholderColor, backgroundColor: theme.InputBackground }} border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+                style={{
+                  color: theme.InputTextColor,
+                  backgroundColor: theme.InputBackground,
+                  borderColor: form.new_password !== form.repeat_new_password ? 'red' : undefined,
+                }}
                 onChange={handleChange}
               />
               <button
-                className="absolute text-[#9190c2] top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
+                className="absolute top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
+                style={{ color: theme.InputTextColor }}
                 type="button"
                 onClick={toggleShowPassword('repeat_new_password')}
               >
@@ -191,7 +215,8 @@ const SignIn = ({ callback, api }: Props) => {
 
           <button
             type="submit"
-            className="mt-6 w-full py-[12px] rounded-[10px] bg-[#24D07E] text-lg font-[500] text-white"
+            className="mt-6 w-full py-[12px] rounded-[10px] text-lg font-[500]"
+            style={{ color: theme.ButtonTextColor, backgroundColor: theme.ButtonBackground }}
           >
             Change my password
           </button>
@@ -202,7 +227,9 @@ const SignIn = ({ callback, api }: Props) => {
 
   return (
     <div>
-      <h1 className="text-[24px] text-center text-[#fff]">Sign in with</h1>
+      <h1 className="text-[24px] text-center" style={{ color: theme.TextColor }}>
+        Sign in with
+      </h1>
       <button
         className="mt-6 w-full py-[12px] rounded-[10px] bg-[#4c8bf5] text-lg font-[500] text-white flex justify-center items-center"
         onClick={api.signInGoogle}
@@ -211,9 +238,11 @@ const SignIn = ({ callback, api }: Props) => {
         Enter with Google
       </button>
       <div className="flex flex-row justify-center items-center mt-6">
-        <div className="flex-1 bg-[#9190c2] h-[1px]"></div>
-        <div className="text-[#9190c2] p-2">OR</div>
-        <div className="flex-1 bg-[#9190c2] h-[1px]"></div>
+        <div className="flex-1 h-[1px]" style={{ backgroundColor: theme.LinkColor }}></div>
+        <div className="p-2" style={{ color: theme.LinkColor }}>
+          OR
+        </div>
+        <div className="flex-1 h-[1px]" style={{ backgroundColor: theme.LinkColor }}></div>
       </div>
       <form onSubmit={requestPin}>
         <input
@@ -221,7 +250,8 @@ const SignIn = ({ callback, api }: Props) => {
           name="email"
           type="email"
           placeholder="Type your email here"
-          className="mt-6 outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+          className="mt-6 outline-none w-full p-4 border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+          style={{ color: theme.InputTextColor, backgroundColor: theme.InputBackground }}
           onChange={handleChange}
         />
 
@@ -231,12 +261,14 @@ const SignIn = ({ callback, api }: Props) => {
             name="password"
             type={showPassword.password ? 'text' : 'password'}
             placeholder="Type your password here"
-            className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            className="outline-none w-full p-4 border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            style={{ color: theme.InputTextColor, backgroundColor: theme.InputBackground }}
             onChange={handleChange}
           />
           <button
-            className="absolute text-[#9190c2] top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
+            className="absolute top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
             type="button"
+            style={{ color: theme.InputTextColor }}
             onClick={toggleShowPassword('password')}
           >
             {showPassword.password ? <EyeInvisibleFilled /> : <EyeFilled />}
@@ -244,7 +276,12 @@ const SignIn = ({ callback, api }: Props) => {
         </div>
 
         <div className="flex justify-end flex-row mt-6">
-          <button className="text-[#9190c2] underline" type="button" onClick={() => setStep(Step.CHANGE_PASSWORD)}>
+          <button
+            className="underline"
+            style={{ color: theme.LinkColor }}
+            type="button"
+            onClick={() => setStep(Step.CHANGE_PASSWORD)}
+          >
             Forget password
           </button>
         </div>
@@ -253,7 +290,8 @@ const SignIn = ({ callback, api }: Props) => {
 
         <button
           type="submit"
-          className="mt-6 w-full py-[12px] rounded-[10px] bg-[#24D07E] text-lg font-[500] text-white"
+          className="mt-6 w-full py-[12px] rounded-[10px] text-lg font-[500]"
+          style={{ color: theme.ButtonTextColor, backgroundColor: theme.ButtonBackground }}
         >
           Login
         </button>
