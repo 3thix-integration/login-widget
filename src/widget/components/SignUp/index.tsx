@@ -1,8 +1,9 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 
 import { EyeFilled, EyeInvisibleFilled } from '@ant-design/icons';
 
 import { Error3thix, PinSuccess, RespAPI } from '../../clients/types';
+import { ThemeContext } from '../../contexts/theme';
 
 type Props = {
   success: () => void;
@@ -14,6 +15,7 @@ interface apiClient {
 }
 
 const SignUp = ({ success, api }: Props) => {
+  const theme = useContext(ThemeContext);
   const [errorMsg, setErrorMsg] = useState<string>();
   const [form, setForm] = useState({ first_name: '', last_name: '', email: '', password: '', repeat_password: '' });
   const [showPassword, setShowPassword] = useState({
@@ -56,57 +58,88 @@ const SignUp = ({ success, api }: Props) => {
 
   return (
     <div>
-      <h1 className="text-[24px] text-center text-[#fff]">Create new account</h1>
+      <h1 className="text-[24px] text-center" style={{ color: theme.TextColor }}>
+        Create new account
+      </h1>
       <form onSubmit={submitLoginWithEmail}>
         <div className="mt-4">
-          <div className="text-[#68679d] ml-2">First name</div>
+          <div className="ml-2" style={{ color: theme.InputLabelColor }}>
+            First name
+          </div>
           <input
             required
             name="first_name"
             type="text"
             placeholder="Type your First Name"
-            className=" outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            className=" outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            style={{
+              color: theme.InputTextColor,
+              backgroundColor: theme.InputBackground,
+              borderColor: theme.InputBorderColor,
+            }}
             onChange={handleChange}
           />
         </div>
 
         <div className="mt-4">
-          <div className="text-[#68679d] ml-2">Last name</div>
+          <div className="ml-2" style={{ color: theme.InputLabelColor }}>
+            Last name
+          </div>
           <input
             required
             name="last_name"
             type="text"
             placeholder="Type your Last name"
-            className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            className="outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            style={{
+              color: theme.InputTextColor,
+              backgroundColor: theme.InputBackground,
+              borderColor: theme.InputBorderColor,
+            }}
             onChange={handleChange}
           />
         </div>
 
         <div className="mt-4">
-          <div className="text-[#68679d] ml-2">E-mail</div>
+          <div className="ml-2" style={{ color: theme.InputLabelColor }}>
+            E-mail
+          </div>
           <input
             required
             name="email"
             type="email"
             placeholder="Type your email here"
-            className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            className="outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            style={{
+              color: theme.InputTextColor,
+              backgroundColor: theme.InputBackground,
+              borderColor: theme.InputBorderColor,
+            }}
             onChange={handleChange}
           />
         </div>
 
         <div className="mt-4">
-          <div className="text-[#68679d] ml-2">Password</div>
+          <div className="ml-2" style={{ color: theme.InputLabelColor }}>
+            Password
+          </div>
           <div className="relative">
             <input
               required
               name="password"
               type={showPassword.password ? 'text' : 'password'}
               placeholder="Type your new password here"
-              className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+              className="outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+              style={{
+                color: theme.InputTextColor,
+                backgroundColor: theme.InputBackground,
+                borderColor: theme.InputBorderColor,
+              }}
               onChange={handleChange}
             />
             <button
-              className="absolute text-[#9190c2] top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
+              className="absolute top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
+              style={{ color: theme.InputTextColor }}
               type="button"
               onClick={toggleShowPassword('password')}
             >
@@ -116,19 +149,26 @@ const SignUp = ({ success, api }: Props) => {
         </div>
 
         <div className="mt-4">
-          <div className="text-[#68679d] ml-2">Repeat New password</div>
+          <div className="ml-2" style={{ color: theme.InputLabelColor }}>
+            Repeat New password
+          </div>
           <div className="relative">
             <input
               required
               name="repeat_password"
               type={showPassword.repeat_password ? 'text' : 'password'}
               placeholder="Type your new password here"
-              className="outline-none w-full p-4 bg-[#181745] text-[#EEE] border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
-              style={{ borderColor: form.password !== form.repeat_password ? 'red' : undefined }}
+              className="outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+              style={{
+                color: theme.InputTextColor,
+                backgroundColor: theme.InputBackground,
+                borderColor: form.password !== form.repeat_password ? 'red' : theme.InputBorderColor,
+              }}
               onChange={handleChange}
             />
             <button
-              className="absolute text-[#9190c2] top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
+              className="absolute top-[calc(50%_-_14px)] right-5 text-[16px] z-[1]"
+              style={{ color: theme.InputTextColor }}
               type="button"
               onClick={toggleShowPassword('repeat_password')}
             >
@@ -141,7 +181,8 @@ const SignUp = ({ success, api }: Props) => {
 
         <button
           type="submit"
-          className="mt-6 w-full py-[12px] rounded-[10px] bg-[#24D07E] text-lg font-[500] text-white"
+          className="mt-6 w-full py-[12px] rounded-[10px] text-lg font-[500]"
+          style={{ color: theme.ButtonTextColor, backgroundColor: theme.ButtonBackground }}
         >
           Create Account
         </button>

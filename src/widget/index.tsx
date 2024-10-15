@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { client } from './clients';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import { defaultTheme, ThemeContext, ThemeProps } from './contexts/theme';
 import { deleteTokenFromURL, getTokenFromURL } from './utils';
 
 import './style.css';
@@ -10,6 +11,18 @@ import './style.css';
 type Props = {
   callback: (token: string) => void;
   url: string;
+  style?: {
+    TextColor?: string;
+    LinkColor?: string;
+    CardBackground?: string;
+    ButtonBackground?: string;
+    ButtonTextColor?: string;
+    InputLabelColor?: string;
+    InputBorderColor?: string;
+    InputTextColor?: string;
+    InputBackground?: string;
+    BackgroundColor?: string;
+  };
 };
 
 enum Page {
@@ -19,7 +32,8 @@ enum Page {
 
 let token = getTokenFromURL();
 
-const Widget = ({ callback, url }: Props) => {
+const Widget = ({ callback, url, style }: Props) => {
+  const [theme, setTheme] = useState<ThemeProps>(defaultTheme);
   const [page, setPage] = useState<Page>(Page.SignIn);
   const apiRef = useRef(client(url, window.location.href));
 
@@ -31,25 +45,42 @@ const Widget = ({ callback, url }: Props) => {
     }
   }, [callback]);
 
+  useEffect(() => {
+    if (style) {
+      if (style.BackgroundColor) document.body.style.backgroundColor = style.BackgroundColor;
+      setTheme((old) => ({ ...old, ...style }));
+    }
+  }, [style]);
+
   return (
-    <div className="card">
-      {page === Page.SignIn && (
-        <>
-          <SignIn callback={callback} api={apiRef.current} />
-          <button className="text-[#9190c2] mt-10 text-center w-full underline" onClick={() => setPage(Page.SignUp)}>
-            create a new account
-          </button>
-        </>
-      )}
-      {page === Page.SignUp && (
-        <>
-          <SignUp success={() => setPage(Page.SignIn)} api={apiRef.current} />
-          <button className="text-[#9190c2] mt-10 text-center w-full underline" onClick={() => setPage(Page.SignIn)}>
-            sign in with an existing account
-          </button>
-        </>
-      )}
-    </div>
+    <ThemeContext.Provider value={theme}>
+      <div className="card" style={{ backgroundColor: theme.CardBackground }}>
+        {page === Page.SignIn && (
+          <>
+            <SignIn callback={callback} api={apiRef.current} />
+            <button
+              className="mt-10 text-center w-full underline"
+              style={{ color: theme.LinkColor }}
+              onClick={() => setPage(Page.SignUp)}
+            >
+              create a new account
+            </button>
+          </>
+        )}
+        {page === Page.SignUp && (
+          <>
+            <SignUp success={() => setPage(Page.SignIn)} api={apiRef.current} />
+            <button
+              className="mt-10 text-center w-full underline"
+              style={{ color: theme.LinkColor }}
+              onClick={() => setPage(Page.SignIn)}
+            >
+              sign in with an existing account
+            </button>
+          </>
+        )}
+      </div>
+    </ThemeContext.Provider>
   );
 };
 

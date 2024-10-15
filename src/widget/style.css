@@ -18,6 +18,6 @@ body {
   max-width: 600px;
   margin:auto;
   margin-top: 100px;
-  background-color: #00002D;
+  padding: 30px;
   border-radius: 20px;
 }
