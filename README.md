@@ -9,7 +9,7 @@ yarn add 3thix-login-widget
 # Usage
 
 ```tsx
-import LoginWidget from 'login-3thix/dist';
+import LoginWidget from '3thix-login-widget';
 
 const url = "https://sandbox-api.3thix.com"
 
