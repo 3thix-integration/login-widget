@@ -1,18 +1,10 @@
 # Installing
 
-To install you must include in your ``package.json`` file on the dependencies section:
-```json
-{
-  // ...
-  "dependencies": {
-    // ...
-    "login-3thix": "git+ssh://git@github.com:3thix/login-widget.git#v1.0.7"
-  }
-  // ...
-}
+```shell
+npm install 3thix-login-widget
+# OR
+yarn add 3thix-login-widget
 ```
-
-and run ``yarn`` or ``npm install``.
 
 # Usage
 
