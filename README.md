@@ -34,9 +34,35 @@ const YourComponent = () => {
 export default YourComponent;
 ```
 
+## Styling
+
+```tsx
+// ...
+  return (
+    <LoginWidget
+      callback={handleCallback}
+      url={url}
+      style={{
+        BackgroundColor: '#d6d6f1',
+        CardBackground: '#fff',
+        TextColor: '#68679D',
+        LinkColor: '#b8b8d7',
+        ButtonBackground: '#24D07E',
+        ButtonTextColor: '#FFFFFF',
+        InputLabelColor: '#68679D',
+        InputTextColor: '#68679D',
+        InputBackground: '#efeff3',
+        InputBorderColor: '#efeff3',
+      }}
+    />
+  )
+//...
+```
+
+
 # Requests
 
-This is all the requests configured in the widget, if you want to create your own widget, please, use this login system.
+If you want to create your own login frontend implementation, these endpoints could be util for you:
 
 Base URL
 - Sandbox: https://sandbox-api.3thix.com
