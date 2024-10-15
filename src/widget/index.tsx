@@ -21,6 +21,7 @@ type Props = {
     InputBorderColor?: string;
     InputTextColor?: string;
     InputBackground?: string;
+    BackgroundColor?: string;
   };
 };
 
@@ -45,7 +46,10 @@ const Widget = ({ callback, url, style }: Props) => {
   }, [callback]);
 
   useEffect(() => {
-    if (style) setTheme((old) => ({ ...old, ...style }));
+    if (style) {
+      if (style.BackgroundColor) document.body.style.backgroundColor = style.BackgroundColor;
+      setTheme((old) => ({ ...old, ...style }));
+    }
   }, [style]);
 
   return (
