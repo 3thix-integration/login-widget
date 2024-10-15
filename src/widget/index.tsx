@@ -18,6 +18,7 @@ type Props = {
     ButtonBackground?: string;
     ButtonTextColor?: string;
     InputLabelColor?: string;
+    InputBorderColor?: string;
     InputTextColor?: string;
     InputBackground?: string;
   };

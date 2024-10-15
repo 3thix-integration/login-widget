@@ -71,8 +71,12 @@ const SignUp = ({ success, api }: Props) => {
             name="first_name"
             type="text"
             placeholder="Type your First Name"
-            className=" outline-none w-full p-4 border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
-            style={{ color: theme.InputTextColor, backgroundColor: theme.InputBackground }}
+            className=" outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            style={{
+              color: theme.InputTextColor,
+              backgroundColor: theme.InputBackground,
+              borderColor: theme.InputBorderColor,
+            }}
             onChange={handleChange}
           />
         </div>
@@ -86,8 +90,12 @@ const SignUp = ({ success, api }: Props) => {
             name="last_name"
             type="text"
             placeholder="Type your Last name"
-            className="outline-none w-full p-4 border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
-            style={{ color: theme.InputTextColor, backgroundColor: theme.InputBackground }}
+            className="outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            style={{
+              color: theme.InputTextColor,
+              backgroundColor: theme.InputBackground,
+              borderColor: theme.InputBorderColor,
+            }}
             onChange={handleChange}
           />
         </div>
@@ -101,8 +109,12 @@ const SignUp = ({ success, api }: Props) => {
             name="email"
             type="email"
             placeholder="Type your email here"
-            className="outline-none w-full p-4 border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
-            style={{ color: theme.InputTextColor, backgroundColor: theme.InputBackground }}
+            className="outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            style={{
+              color: theme.InputTextColor,
+              backgroundColor: theme.InputBackground,
+              borderColor: theme.InputBorderColor,
+            }}
             onChange={handleChange}
           />
         </div>
@@ -117,8 +129,12 @@ const SignUp = ({ success, api }: Props) => {
               name="password"
               type={showPassword.password ? 'text' : 'password'}
               placeholder="Type your new password here"
-              className="outline-none w-full p-4 border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
-              style={{ color: theme.InputTextColor, backgroundColor: theme.InputBackground }}
+              className="outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+              style={{
+                color: theme.InputTextColor,
+                backgroundColor: theme.InputBackground,
+                borderColor: theme.InputBorderColor,
+              }}
               onChange={handleChange}
             />
             <button
@@ -142,11 +158,11 @@ const SignUp = ({ success, api }: Props) => {
               name="repeat_password"
               type={showPassword.repeat_password ? 'text' : 'password'}
               placeholder="Type your new password here"
-              className="outline-none w-full p-4 border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+              className="outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
               style={{
                 color: theme.InputTextColor,
                 backgroundColor: theme.InputBackground,
-                borderColor: form.password !== form.repeat_password ? 'red' : undefined,
+                borderColor: form.password !== form.repeat_password ? 'red' : theme.InputBorderColor,
               }}
               onChange={handleChange}
             />

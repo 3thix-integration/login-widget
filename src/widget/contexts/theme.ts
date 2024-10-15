@@ -9,6 +9,7 @@ export type ThemeProps = {
   InputLabelColor: string;
   InputTextColor: string;
   InputBackground: string;
+  InputBorderColor: string;
 };
 
 export const defaultTheme: ThemeProps = {
@@ -20,6 +21,7 @@ export const defaultTheme: ThemeProps = {
   InputLabelColor: '#68679D',
   InputTextColor: '#EEEEEE',
   InputBackground: '#181745',
+  InputBorderColor: '#181745',
 };
 
 export const ThemeContext = createContext<ThemeProps>(defaultTheme);

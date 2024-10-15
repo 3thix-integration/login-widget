@@ -109,8 +109,12 @@ const SignIn = ({ callback, api }: Props) => {
             name="pin"
             type="text"
             placeholder="Type the PIN here"
-            className="mt-6 outline-none w-full p-4 border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
-            style={{ color: theme.InputTextColor, backgroundColor: theme.InputBackground }}
+            className="mt-6 outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            style={{
+              color: theme.InputTextColor,
+              backgroundColor: theme.InputBackground,
+              borderColor: theme.InputBorderColor,
+            }}
             onChange={handleChange}
           />
 
@@ -151,8 +155,12 @@ const SignIn = ({ callback, api }: Props) => {
               name="email"
               type="email"
               placeholder="Type your email here"
-              className="outline-none w-full p-4 border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
-              style={{ color: theme.InputTextColor, backgroundColor: theme.InputBackground }}
+              className="outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+              style={{
+                color: theme.InputTextColor,
+                backgroundColor: theme.InputBackground,
+                borderColor: theme.InputBorderColor,
+              }}
               onChange={handleChange}
             />
           </div>
@@ -167,8 +175,12 @@ const SignIn = ({ callback, api }: Props) => {
                 name="new_password"
                 type={showPassword.new_password ? 'text' : 'password'}
                 placeholder="Type your new password here"
-                className="outline-none w-full p-4 border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
-                style={{ color: theme.InputTextColor, backgroundColor: theme.InputBackground }}
+                className="outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+                style={{
+                  color: theme.InputTextColor,
+                  backgroundColor: theme.InputBackground,
+                  borderColor: theme.InputBorderColor,
+                }}
                 onChange={handleChange}
               />
               <button
@@ -192,11 +204,11 @@ const SignIn = ({ callback, api }: Props) => {
                 name="repeat_new_password"
                 type={showPassword.repeat_new_password ? 'text' : 'password'}
                 placeholder="Type your new password here"
-                className="outline-none w-full p-4 style={{ color: theme.InputPlaceholderColor, backgroundColor: theme.InputBackground }} border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+                className="outline-none w-full p-4 style={{ color: theme.InputPlaceholderColor, backgroundColor: theme.InputBackground }} border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
                 style={{
                   color: theme.InputTextColor,
                   backgroundColor: theme.InputBackground,
-                  borderColor: form.new_password !== form.repeat_new_password ? 'red' : undefined,
+                  borderColor: form.new_password !== form.repeat_new_password ? 'red' : theme.InputBorderColor,
                 }}
                 onChange={handleChange}
               />
@@ -250,8 +262,12 @@ const SignIn = ({ callback, api }: Props) => {
           name="email"
           type="email"
           placeholder="Type your email here"
-          className="mt-6 outline-none w-full p-4 border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
-          style={{ color: theme.InputTextColor, backgroundColor: theme.InputBackground }}
+          className="mt-6 outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+          style={{
+            color: theme.InputTextColor,
+            backgroundColor: theme.InputBackground,
+            borderColor: theme.InputBorderColor,
+          }}
           onChange={handleChange}
         />
 
@@ -261,8 +277,12 @@ const SignIn = ({ callback, api }: Props) => {
             name="password"
             type={showPassword.password ? 'text' : 'password'}
             placeholder="Type your password here"
-            className="outline-none w-full p-4 border-2 border-[#181745] focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
-            style={{ color: theme.InputTextColor, backgroundColor: theme.InputBackground }}
+            className="outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            style={{
+              color: theme.InputTextColor,
+              backgroundColor: theme.InputBackground,
+              borderColor: theme.InputBorderColor,
+            }}
             onChange={handleChange}
           />
           <button
