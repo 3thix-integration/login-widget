@@ -1,4 +1,8 @@
-# Installing
+# Login 3thix widget
+
+https://www.npmjs.com/package/3thix-login-widget
+
+## Installing
 
 ```shell
 npm install 3thix-login-widget
@@ -6,7 +10,7 @@ npm install 3thix-login-widget
 yarn add 3thix-login-widget
 ```
 
-# Usage
+## Usage
 
 ```tsx
 import LoginWidget from '3thix-login-widget';
@@ -26,7 +30,7 @@ const YourComponent = () => {
 export default YourComponent;
 ```
 
-## Styling
+### Styling
 
 ```tsx
 // ...
@@ -52,7 +56,7 @@ export default YourComponent;
 ```
 
 
-# Requests
+## Requests
 
 If you want to create your own login frontend implementation, these endpoints could be util for you:
 
