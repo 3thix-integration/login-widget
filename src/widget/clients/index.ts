@@ -9,6 +9,12 @@ export function client(baseUrl: string, callbackUrl: string) {
     headers: {},
   });
 
+  instance.interceptors.request.use(async (request) => {
+    const lang = navigator.language || 'en-US';
+    request.headers['Accept-Language'] = lang;
+    return request;
+  });
+
   instance.interceptors.response.use(
     (response) => response,
     (error: AxiosError): RespAPI<AxiosError> => {
@@ -28,10 +34,10 @@ export function client(baseUrl: string, callbackUrl: string) {
     }
   );
 
-  const auth = async (pin: string, email: string, password: string): Promise<RespAPI<LoginSuccess>> => {
+  const authPin = async (email: string, pin: string): Promise<RespAPI<LoginSuccess>> => {
     const response = await instance.post(
-      '/entity/user/auth',
-      { pin, email, password },
+      '/entity/user/auth/pin',
+      { pin, email },
       { headers: { 'Accept-version': 'v2' } }
     );
 
@@ -41,8 +47,12 @@ export function client(baseUrl: string, callbackUrl: string) {
     };
   };
 
-  const changePassword = async (pin: string, email: string, password: string): Promise<RespAPI<LoginSuccess>> => {
-    const response = await instance.put('/entity/user/password/update', { pin, email, password });
+  const auth = async (email: string, password: string): Promise<RespAPI<PinSuccess>> => {
+    const response = await instance.post(
+      '/entity/user/auth',
+      { email, password },
+      { headers: { 'Accept-version': 'v2' } }
+    );
 
     return {
       status: response.status,
@@ -50,8 +60,21 @@ export function client(baseUrl: string, callbackUrl: string) {
     };
   };
 
-  const pin = async (email: string): Promise<RespAPI<PinSuccess>> => {
-    const response = await instance.post('/entity/user/auth/pin', { email });
+  const changePasswordPin = async (
+    pin: string,
+    email: string,
+    new_password: string
+  ): Promise<RespAPI<LoginSuccess>> => {
+    const response = await instance.put('/entity/user/password/update/pin', { pin, email, new_password });
+
+    return {
+      status: response.status,
+      data: response.data,
+    };
+  };
+
+  const changePassword = async (email: string): Promise<RespAPI<PinSuccess>> => {
+    const response = await instance.post('/entity/user/password/update', { email });
 
     return {
       status: response.status,
@@ -84,5 +107,5 @@ export function client(baseUrl: string, callbackUrl: string) {
     window.location.replace(url.href);
   };
 
-  return { auth, pin, signUp, changePassword, signInGoogle };
+  return { authPin, auth, changePassword, signUp, changePasswordPin, signInGoogle };
 }
