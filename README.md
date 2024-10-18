@@ -77,23 +77,12 @@ To create a new account you can use:
 }
 ```
 
-### Get authorization pin by email
+### Get authorization pin to login by email
 
-To perform login and passwords updates you will need to get an authorization pin and to receive this pin in your email, you must request:
+To perform login will need to get an authorization pin and to receive this pin in your email, you must request:
 ```
-[POST] /entity/user/auth/pin
+[POST] /entity/user/auth
 {
-  email:string,
-}
-```
-
-### Update password
-
-You will use this endpoint to reset users password. You first of all will call the ``/entity/user/auth/pin`` endpoint, and after that send the pin, email and the new password to this endpoint:
-```
-[POST] /entity/user/password/update
-{
-  pin:string,
   email:string,
   password:string,
 }
@@ -101,13 +90,12 @@ You will use this endpoint to reset users password. You first of all will call t
 
 ### Login
 
-To perform a login you first of all will call the ``/entity/user/auth/pin`` endpoint, and after that send the pin, email and password to this endpoint:
+To perform a login you first of all will call the ``/entity/user/auth`` endpoint, and after that send the pin, email and password to this endpoint:
 ```
-[POST] /entity/user/auth
+[POST] /entity/user/auth/pin
 {
   pin:string,
   email:string,
-  password:string,
 }
 ```
 
@@ -116,4 +104,26 @@ To perform a login you first of all will call the ``/entity/user/auth/pin`` endp
 Because SSO already certify users authenticity, you only need to redirect the user to the login page sending in the queryParams the endpoint you want to receive the token when users finish his authentication:
 ```
 [GET] /entity/user/auth/google/signin?callbackUrl=<url-to-get-token-back>
+```
+
+### Get authorization pin to change password by email
+
+To perform login will need to get an authorization pin and to receive this pin in your email, you must request:
+```
+[POST] /entity/user/password/update
+{
+  email:string,
+}
+```
+
+### Update password
+
+You will use this endpoint to reset users password. You first of all will call the ``/entity/user/password/update`` endpoint, and after that send the pin, email and the new password to this endpoint:
+```
+[POST] /entity/user/password/update/pin
+{
+  pin:string,
+  email:string,
+  new_password:string,
+}
 ```
