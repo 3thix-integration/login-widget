@@ -1,18 +1,26 @@
 import { useCallback, useContext, useState } from 'react';
 
-import { EyeFilled, EyeInvisibleFilled, GoogleOutlined } from '@ant-design/icons';
+import { AppleFilled, EyeFilled, EyeInvisibleFilled, GoogleOutlined } from '@ant-design/icons';
 
 import { ThemeContext } from '../../../../contexts/theme';
 
 type Props = {
   signInGoogle: () => void;
+  signInApple: () => void;
   onSubmit: () => Promise<void>;
   handleChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   onClickForgetPassword: () => void;
   errorMsg?: string;
 };
 
-const AuthenticationForm = ({ signInGoogle, onSubmit, handleChange, onClickForgetPassword, errorMsg }: Props) => {
+const AuthenticationForm = ({
+  signInGoogle,
+  signInApple,
+  onSubmit,
+  handleChange,
+  onClickForgetPassword,
+  errorMsg,
+}: Props) => {
   const theme = useContext(ThemeContext);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -37,6 +45,13 @@ const AuthenticationForm = ({ signInGoogle, onSubmit, handleChange, onClickForge
       >
         <GoogleOutlined className="mr-2" />
         Enter with Google
+      </button>
+      <button
+        className="mt-6 w-full py-[12px] rounded-[10px] bg-[#fff] text-lg font-[500] text-[#333] flex justify-center items-center"
+        onClick={signInApple}
+      >
+        <AppleFilled className="mr-2" />
+        Enter with Apple
       </button>
       <div className="flex flex-row justify-center items-center mt-6">
         <div className="flex-1 h-[1px]" style={{ backgroundColor: theme.LinkColor }}></div>

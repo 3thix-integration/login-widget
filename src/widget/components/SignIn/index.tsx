@@ -17,6 +17,7 @@ interface apiClient {
   auth: (email: string, password: string) => Promise<RespAPI<PinSuccess>>;
   authPin: (email: string, pin: string) => Promise<RespAPI<LoginSuccess>>;
   signInGoogle: () => void;
+  signInApple: () => void;
 }
 
 enum Step {
@@ -123,6 +124,7 @@ const SignIn = ({ callback, api }: Props) => {
   return (
     <AuthenticationForm
       signInGoogle={api.signInGoogle}
+      signInApple={api.signInApple}
       handleChange={handleChange}
       errorMsg={errorMsg}
       onSubmit={requestAuthPin}
