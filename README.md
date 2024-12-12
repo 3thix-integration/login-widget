@@ -1,6 +1,9 @@
 # Login 3thix widget
 
-https://www.npmjs.com/package/3thix-login-widget
+[![npm version](https://badge.fury.io/js/3thix-login-widget.svg)](https://badge.fury.io/js/3thix-login-widget)
+
+
+<img src="preview.png" width="100%" height="auto" />
 
 ## Installing
 
