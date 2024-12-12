@@ -107,5 +107,11 @@ export function client(baseUrl: string, callbackUrl: string) {
     window.location.replace(url.href);
   };
 
-  return { authPin, auth, changePassword, signUp, changePasswordPin, signInGoogle };
+  const signInApple = () => {
+    const url = new URL(`${baseUrl}/entity/user/auth/apple/signin`);
+    url.searchParams.append('callbackUrl', callbackUrl);
+    window.location.replace(url.href);
+  };
+
+  return { authPin, auth, changePassword, signUp, changePasswordPin, signInGoogle, signInApple };
 }
