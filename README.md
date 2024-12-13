@@ -1,9 +1,9 @@
 # Login 3thix widget
 
-![NPM Version](https://img.shields.io/npm/v/3thix-login-widget)
+[![NPM Version](https://img.shields.io/npm/v/3thix-login-widget)](https://www.npmjs.com/package/3thix-login-widget)
 
 
-<img src="preview.png" width="100%" height="auto" />
+<img src="https://github.com/3thix/login-widget/preview.png" width="100%" height="auto" />
 
 ## Installing
 
