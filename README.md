@@ -1,6 +1,6 @@
 # Login 3thix widget
 
-[![npm version](https://badge.fury.io/js/3thix-login-widget.svg)](https://badge.fury.io/js/3thix-login-widget)
+![NPM Version](https://img.shields.io/npm/v/3thix-login-widget)
 
 
 <img src="preview.png" width="100%" height="auto" />
