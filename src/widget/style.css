@@ -4,20 +4,24 @@
 
 body {
   margin: 0;
-  font-family: Poppins;
+  font-family:
+    Helvetica Now Display,
+    Helvetica;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #00002D;
+  background-color: #1f2a39;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
+  -moz-box-sizing: border-box; /* Firefox, other Gecko */
+  box-sizing: border-box; /* Opera/IE 8+ */
+  font-weight: 400;
 }
 
 .card {
   width: 100%;
   max-width: 600px;
-  margin:auto;
-  margin-top: 100px;
+  margin: auto;
+  margin-top: 30px;
+  margin-bottom: 30px;
   padding: 30px;
   border-radius: 20px;
 }

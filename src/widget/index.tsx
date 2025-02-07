@@ -59,11 +59,11 @@ const Widget = ({ callback, url, style }: Props) => {
           <>
             <SignIn callback={callback} api={apiRef.current} />
             <button
-              className="mt-10 text-center w-full underline"
-              style={{ color: theme.LinkColor }}
+              className="mt-6 w-full py-[12px] rounded-[10px] text-lg font-[600] border-2"
+              style={{ borderColor: theme.ButtonBackground, color: theme.ButtonBackground }}
               onClick={() => setPage(Page.SignUp)}
             >
-              create a new account
+              Sign Up
             </button>
           </>
         )}
@@ -71,11 +71,11 @@ const Widget = ({ callback, url, style }: Props) => {
           <>
             <SignUp success={() => setPage(Page.SignIn)} api={apiRef.current} />
             <button
-              className="mt-10 text-center w-full underline"
-              style={{ color: theme.LinkColor }}
+              className="mt-6 w-full py-[12px] rounded-[10px] text-lg font-[600] border-2"
+              style={{ borderColor: theme.ButtonBackground, color: theme.ButtonBackground }}
               onClick={() => setPage(Page.SignIn)}
             >
-              sign in with an existing account
+              Sign in with an existing account
             </button>
           </>
         )}

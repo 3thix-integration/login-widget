@@ -17,6 +17,7 @@ interface apiClient {
 const SignUp = ({ success, api }: Props) => {
   const theme = useContext(ThemeContext);
   const [errorMsg, setErrorMsg] = useState<string>();
+  // const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [form, setForm] = useState({ first_name: '', last_name: '', email: '', password: '', repeat_password: '' });
   const [showPassword, setShowPassword] = useState({
     password: false,
@@ -50,7 +51,7 @@ const SignUp = ({ success, api }: Props) => {
   const errorComponent = useMemo(() => {
     if (!errorMsg) return null;
     return (
-      <div className="mt-6 w-full text-center border-[2px] border-[#f37575] text-[#fa4747] bg-[#ffb8b8] p-[10px] rounded-[12px]">
+      <div className="mt-6 w-full text-center border-[2px] border-[#f37575] text-[#fa4747] bg-[#ffb8b8] p-[10px] rounded-[8px]">
         <p>{errorMsg}</p>
       </div>
     );
@@ -63,15 +64,15 @@ const SignUp = ({ success, api }: Props) => {
       </h1>
       <form onSubmit={submitLoginWithEmail}>
         <div className="mt-4">
-          <div className="ml-2" style={{ color: theme.InputLabelColor }}>
+          <div className="ml-1" style={{ color: theme.InputLabelColor }}>
             First name
           </div>
           <input
             required
             name="first_name"
             type="text"
-            placeholder="Type your First Name"
-            className=" outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            placeholder="First Name"
+            className="font-[600] outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
             style={{
               color: theme.InputTextColor,
               backgroundColor: theme.InputBackground,
@@ -82,15 +83,15 @@ const SignUp = ({ success, api }: Props) => {
         </div>
 
         <div className="mt-4">
-          <div className="ml-2" style={{ color: theme.InputLabelColor }}>
+          <div className="ml-1" style={{ color: theme.InputLabelColor }}>
             Last name
           </div>
           <input
             required
             name="last_name"
             type="text"
-            placeholder="Type your Last name"
-            className="outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            placeholder="Last name"
+            className="font-[600] outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
             style={{
               color: theme.InputTextColor,
               backgroundColor: theme.InputBackground,
@@ -101,15 +102,15 @@ const SignUp = ({ success, api }: Props) => {
         </div>
 
         <div className="mt-4">
-          <div className="ml-2" style={{ color: theme.InputLabelColor }}>
+          <div className="ml-1" style={{ color: theme.InputLabelColor }}>
             E-mail
           </div>
           <input
             required
             name="email"
             type="email"
-            placeholder="Type your email here"
-            className="outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+            placeholder="email@email.com"
+            className="font-[600] outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
             style={{
               color: theme.InputTextColor,
               backgroundColor: theme.InputBackground,
@@ -120,7 +121,7 @@ const SignUp = ({ success, api }: Props) => {
         </div>
 
         <div className="mt-4">
-          <div className="ml-2" style={{ color: theme.InputLabelColor }}>
+          <div className="ml-1" style={{ color: theme.InputLabelColor }}>
             Password
           </div>
           <div className="relative">
@@ -128,8 +129,8 @@ const SignUp = ({ success, api }: Props) => {
               required
               name="password"
               type={showPassword.password ? 'text' : 'password'}
-              placeholder="Type your new password here"
-              className="outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+              placeholder="Password"
+              className="font-[600] outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
               style={{
                 color: theme.InputTextColor,
                 backgroundColor: theme.InputBackground,
@@ -149,16 +150,16 @@ const SignUp = ({ success, api }: Props) => {
         </div>
 
         <div className="mt-4">
-          <div className="ml-2" style={{ color: theme.InputLabelColor }}>
-            Repeat New password
+          <div className="ml-1" style={{ color: theme.InputLabelColor }}>
+            Repeat your password
           </div>
           <div className="relative">
             <input
               required
               name="repeat_password"
               type={showPassword.repeat_password ? 'text' : 'password'}
-              placeholder="Type your new password here"
-              className="outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+              placeholder="Repeat your password"
+              className="font-[600] outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
               style={{
                 color: theme.InputTextColor,
                 backgroundColor: theme.InputBackground,
@@ -177,11 +178,36 @@ const SignUp = ({ success, api }: Props) => {
           </div>
         </div>
 
+        <div className="mt-6">
+          <div className="ml-1 flex flex-row items-center gap-2" style={{ color: theme.InputLabelColor }}>
+            <div className="flex">
+              <input
+                required
+                type="checkbox"
+                className="h-[18px] w-[18px]"
+                style={{ accentColor: theme.ButtonBackground }}
+              />
+            </div>
+            <div className="text-[16px]">
+              I accept the{' '}
+              <a
+                target="_blank"
+                className="underline"
+                href="https://3thix.com/terms-conditions/"
+                style={{ color: theme.LinkColor }}
+                rel="noreferrer"
+              >
+                terms and conditions
+              </a>
+            </div>
+          </div>
+        </div>
+
         {errorComponent}
 
         <button
           type="submit"
-          className="mt-6 w-full py-[12px] rounded-[10px] text-lg font-[500]"
+          className="mt-8 w-full py-[12px] rounded-[10px] text-lg font-[600]"
           style={{ color: theme.ButtonTextColor, backgroundColor: theme.ButtonBackground }}
         >
           Create Account
