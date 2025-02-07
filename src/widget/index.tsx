@@ -69,7 +69,7 @@ const Widget = ({ callback, url, style }: Props) => {
         )}
         {page === Page.SignUp && (
           <>
-            <SignUp success={() => setPage(Page.SignIn)} api={apiRef.current} />
+            <SignUp callback={callback} api={apiRef.current} />
             <button
               className="mt-6 w-full py-[12px] rounded-[10px] text-lg font-[600] border-2"
               style={{ borderColor: theme.ButtonBackground, color: theme.ButtonBackground }}

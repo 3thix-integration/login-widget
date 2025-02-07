@@ -1,6 +1,6 @@
 import { useCallback, useContext } from 'react';
 
-import { ThemeContext } from '../../../../contexts/theme';
+import { ThemeContext } from '../../contexts/theme';
 
 type Props = {
   onSubmit: () => Promise<void>;

@@ -2,23 +2,39 @@ import { useCallback, useContext, useMemo, useState } from 'react';
 
 import { EyeFilled, EyeInvisibleFilled } from '@ant-design/icons';
 
-import { Error3thix, PinSuccess, RespAPI } from '../../clients/types';
+import { Error3thix, LoginSuccess, PinSuccess, RespAPI } from '../../clients/types';
 import { ThemeContext } from '../../contexts/theme';
+import VerificationPin from '../VerificationPin';
 
 type Props = {
-  success: () => void;
+  callback: (token: string) => void;
   api: apiClient;
 };
 
 interface apiClient {
   signUp: (first_name: string, last_name: string, email: string, password: string) => Promise<RespAPI<PinSuccess>>;
+  auth: (email: string, password: string) => Promise<RespAPI<PinSuccess>>;
+  authPin: (email: string, pin: string) => Promise<RespAPI<LoginSuccess>>;
 }
 
-const SignUp = ({ success, api }: Props) => {
+enum Step {
+  REGISTRATION = 1,
+  PIN,
+}
+
+const SignUp = ({ callback, api }: Props) => {
+  const [step, setStep] = useState<Step>(Step.REGISTRATION);
   const theme = useContext(ThemeContext);
   const [errorMsg, setErrorMsg] = useState<string>();
   // const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const [form, setForm] = useState({ first_name: '', last_name: '', email: '', password: '', repeat_password: '' });
+  const [form, setForm] = useState({
+    pin: '',
+    first_name: '',
+    last_name: '',
+    email: '',
+    password: '',
+    repeat_password: '',
+  });
   const [showPassword, setShowPassword] = useState({
     password: false,
     repeat_password: false,
@@ -32,6 +48,19 @@ const SignUp = ({ success, api }: Props) => {
     setForm((prevFormData) => ({ ...prevFormData, [name]: value }));
   }, []);
 
+  const requestAuthPin = useCallback(async () => {
+    setErrorMsg(undefined);
+
+    const { data, status } = await api.auth(form.email, form.password);
+    if (status !== 200) {
+      console.error(status, data);
+      setErrorMsg((data as Error3thix).message);
+      return;
+    }
+
+    setStep(Step.PIN);
+  }, [form, api]);
+
   const submitLoginWithEmail = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -43,10 +72,21 @@ const SignUp = ({ success, api }: Props) => {
         return;
       }
 
-      success();
+      requestAuthPin();
     },
-    [api, form, success]
+    [api, form.email, form.first_name, form.last_name, form.password, requestAuthPin]
   );
+
+  const handleLoginWithEmail = useCallback(async () => {
+    const { data, status } = await api.authPin(form.email, form.pin);
+    if (status !== 200) {
+      console.error(status, data);
+      setErrorMsg((data as Error3thix).message);
+      return;
+    }
+    const sucess = data as LoginSuccess;
+    callback(sucess.token);
+  }, [callback, form, api]);
 
   const errorComponent = useMemo(() => {
     if (!errorMsg) return null;
@@ -56,6 +96,10 @@ const SignUp = ({ success, api }: Props) => {
       </div>
     );
   }, [errorMsg]);
+
+  if (step === Step.PIN) {
+    return <VerificationPin handleChange={handleChange} errorMsg={errorMsg} onSubmit={handleLoginWithEmail} />;
+  }
 
   return (
     <div>
