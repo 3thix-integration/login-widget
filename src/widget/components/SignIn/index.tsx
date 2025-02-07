@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react';
 
 import { Error3thix, LoginSuccess, PinSuccess, RespAPI } from '../../clients/types';
+import VerificationPin from '../VerificationPin';
 import AuthenticationForm from './components/AuthenticationForm';
 import ChangePassword from './components/ChangePassword';
 import ForgotPassword from './components/ForgotPassword';
-import VerificationPin from './components/VerificationPin';
 
 type Props = {
   callback: (token: string) => void;

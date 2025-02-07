@@ -1,6 +1,6 @@
 import { useCallback, useContext } from 'react';
 
-import { ThemeContext } from '../../../../contexts/theme';
+import { ThemeContext } from '../../contexts/theme';
 
 type Props = {
   onSubmit: () => Promise<void>;
@@ -33,7 +33,7 @@ const VerificationPin = ({ onSubmit, handleChange, errorMsg }: Props) => {
           name="pin"
           type="text"
           placeholder="Type the PIN here"
-          className="mt-6 outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[12px]"
+          className="font-[600] mt-6 outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
           style={{
             color: theme.InputTextColor,
             backgroundColor: theme.InputBackground,
@@ -43,14 +43,14 @@ const VerificationPin = ({ onSubmit, handleChange, errorMsg }: Props) => {
         />
 
         {errorMsg && (
-          <div className="mt-6 w-full border-[2px] text-center border-[#f37575] text-[#fa4747] bg-[#ffb8b8] p-[10px] rounded-[12px]">
+          <div className="mt-6 w-full border-[2px] text-center border-[#f37575] text-[#fa4747] bg-[#ffb8b8] p-[10px] rounded-[8px]">
             <p>{errorMsg}</p>
           </div>
         )}
 
         <button
           type="submit"
-          className="mt-6 w-full py-[12px] rounded-[10px] text-lg font-[500]"
+          className="mt-6 w-full py-[12px] rounded-[10px] text-lg font-[600]"
           style={{ color: theme.ButtonTextColor, backgroundColor: theme.ButtonBackground }}
         >
           Validate

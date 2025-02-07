@@ -13,15 +13,15 @@ export type ThemeProps = {
 };
 
 export const defaultTheme: ThemeProps = {
-  TextColor: '#FFFFFF',
-  LinkColor: '#9190C2',
-  CardBackground: '#00002D',
-  ButtonBackground: '#24D07E',
-  ButtonTextColor: '#FFFFFF',
-  InputLabelColor: '#68679D',
+  TextColor: '#F8F8F8',
+  LinkColor: '#cdcfd2',
+  CardBackground: '#1F2A39',
+  ButtonBackground: '#78F0A0',
+  ButtonTextColor: '#1F2A39',
+  InputLabelColor: '#F8F8F8',
   InputTextColor: '#EEEEEE',
-  InputBackground: '#181745',
-  InputBorderColor: '#181745',
+  InputBackground: '#4b5561',
+  InputBorderColor: '#4b5561',
 };
 
 export const ThemeContext = createContext<ThemeProps>(defaultTheme);
