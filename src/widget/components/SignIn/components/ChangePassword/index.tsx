@@ -52,7 +52,7 @@ const ChangePassword = ({ onSubmit, handleChange, goBack, repeatPasswordDoesNotM
               name="new_password"
               type={showPassword.new_password ? 'text' : 'password'}
               placeholder="Type your new password here"
-              className="font-[600] outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
+              className="font-[600] outline-none w-full p-[14px] border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
               style={{
                 color: theme.InputTextColor,
                 backgroundColor: theme.InputBackground,
@@ -81,7 +81,7 @@ const ChangePassword = ({ onSubmit, handleChange, goBack, repeatPasswordDoesNotM
               name="repeat_new_password"
               type={showPassword.repeat_new_password ? 'text' : 'password'}
               placeholder="Type your new password here"
-              className="font-[600] outline-none w-full p-4 style={{ color: theme.InputPlaceholderColor, backgroundColor: theme.InputBackground }} border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
+              className="font-[600] outline-none w-full p-[14px] style={{ color: theme.InputPlaceholderColor, backgroundColor: theme.InputBackground }} border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
               style={{
                 color: theme.InputTextColor,
                 backgroundColor: theme.InputBackground,

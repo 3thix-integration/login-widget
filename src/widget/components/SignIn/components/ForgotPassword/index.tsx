@@ -43,7 +43,7 @@ const ForgotPassword = ({ onSubmit, handleChange, goBack, errorMsg }: Props) => 
             name="email"
             type="email"
             placeholder="Type your email here"
-            className="font-[600] outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
+            className="font-[600] outline-none w-full p-[14px] border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
             style={{
               color: theme.InputTextColor,
               backgroundColor: theme.InputBackground,

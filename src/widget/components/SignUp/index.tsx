@@ -4,6 +4,8 @@ import { EyeFilled, EyeInvisibleFilled } from '@ant-design/icons';
 
 import { Error3thix, LoginSuccess, PinSuccess, RespAPI } from '../../clients/types';
 import { ThemeContext } from '../../contexts/theme';
+import Divisor from '../Divisor';
+import SSOAuth from '../SSOAuth';
 import VerificationPin from '../VerificationPin';
 
 type Props = {
@@ -15,6 +17,8 @@ interface apiClient {
   signUp: (first_name: string, last_name: string, email: string, password: string) => Promise<RespAPI<PinSuccess>>;
   auth: (email: string, password: string) => Promise<RespAPI<PinSuccess>>;
   authPin: (email: string, pin: string) => Promise<RespAPI<LoginSuccess>>;
+  signInGoogle: () => void;
+  signInApple: () => void;
 }
 
 enum Step {
@@ -103,8 +107,13 @@ const SignUp = ({ callback, api }: Props) => {
 
   return (
     <div>
-      <h1 className="text-[24px] text-center" style={{ color: theme.TextColor }}>
-        Create new account
+      <h1 className="text-[24px] mb-4 text-center" style={{ color: theme.TextColor }}>
+        Sign up with SSO
+      </h1>
+      <SSOAuth signInApple={api.signInApple} signInGoogle={api.signInGoogle} title="Sign Up" />
+      <Divisor />
+      <h1 className="text-[24px] mt-8 mb-4 text-center" style={{ color: theme.TextColor }}>
+        Sign up with E-mail
       </h1>
       <form onSubmit={submitLoginWithEmail}>
         <div className="mt-4">
@@ -116,7 +125,7 @@ const SignUp = ({ callback, api }: Props) => {
             name="first_name"
             type="text"
             placeholder="First Name"
-            className="font-[600] outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
+            className="font-[600] outline-none w-full p-[14px] border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
             style={{
               color: theme.InputTextColor,
               backgroundColor: theme.InputBackground,
@@ -135,7 +144,7 @@ const SignUp = ({ callback, api }: Props) => {
             name="last_name"
             type="text"
             placeholder="Last name"
-            className="font-[600] outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
+            className="font-[600] outline-none w-full p-[14px] border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
             style={{
               color: theme.InputTextColor,
               backgroundColor: theme.InputBackground,
@@ -154,7 +163,7 @@ const SignUp = ({ callback, api }: Props) => {
             name="email"
             type="email"
             placeholder="email@email.com"
-            className="font-[600] outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
+            className="font-[600] outline-none w-full p-[14px] border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
             style={{
               color: theme.InputTextColor,
               backgroundColor: theme.InputBackground,
@@ -174,7 +183,7 @@ const SignUp = ({ callback, api }: Props) => {
               name="password"
               type={showPassword.password ? 'text' : 'password'}
               placeholder="Password"
-              className="font-[600] outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
+              className="font-[600] outline-none w-full p-[14px] border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
               style={{
                 color: theme.InputTextColor,
                 backgroundColor: theme.InputBackground,
@@ -203,7 +212,7 @@ const SignUp = ({ callback, api }: Props) => {
               name="repeat_password"
               type={showPassword.repeat_password ? 'text' : 'password'}
               placeholder="Repeat your password"
-              className="font-[600] outline-none w-full p-4 border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
+              className="font-[600] outline-none w-full p-[14px] border-2 focus:border-[#24D07E] focus:border-solid focus:border-2 rounded-[8px]"
               style={{
                 color: theme.InputTextColor,
                 backgroundColor: theme.InputBackground,
