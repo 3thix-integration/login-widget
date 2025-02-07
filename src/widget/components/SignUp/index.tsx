@@ -4,8 +4,6 @@ import { EyeFilled, EyeInvisibleFilled } from '@ant-design/icons';
 
 import { Error3thix, LoginSuccess, PinSuccess, RespAPI } from '../../clients/types';
 import { ThemeContext } from '../../contexts/theme';
-import Divisor from '../Divisor';
-import SSOAuth from '../SSOAuth';
 import VerificationPin from '../VerificationPin';
 
 type Props = {
@@ -107,11 +105,13 @@ const SignUp = ({ callback, api }: Props) => {
 
   return (
     <div>
-      <h1 className="text-[24px] mb-4 text-center" style={{ color: theme.TextColor }}>
-        Sign up with SSO
-      </h1>
-      <SSOAuth signInApple={api.signInApple} signInGoogle={api.signInGoogle} title="Sign Up" />
-      <Divisor />
+      {/*
+        <h1 className="text-[24px] mb-4 text-center" style={{ color: theme.TextColor }}>
+          Sign up with SSO
+        </h1>
+        <SSOAuth signInApple={api.signInApple} signInGoogle={api.signInGoogle} title="Sign Up" />
+        <Divisor />
+      */}
       <h1 className="text-[24px] mt-4 mb-4 text-center" style={{ color: theme.TextColor }}>
         Sign up with E-mail
       </h1>
