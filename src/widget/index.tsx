@@ -11,6 +11,7 @@ import './style.css';
 type Props = {
   callback: (token: string) => void;
   url: string;
+  onlySignUp?: boolean;
   style?: {
     TextColor?: string;
     LinkColor?: string;
@@ -32,9 +33,9 @@ enum Page {
 
 let token = getTokenFromURL();
 
-const Widget = ({ callback, url, style }: Props) => {
+const Widget = ({ onlySignUp, callback, url, style }: Props) => {
   const [theme, setTheme] = useState<ThemeProps>(defaultTheme);
-  const [page, setPage] = useState<Page>(Page.SignIn);
+  const [page, setPage] = useState<Page>(onlySignUp ? Page.SignUp : Page.SignIn);
   const apiRef = useRef(client(url, window.location.href));
 
   useEffect(() => {
@@ -70,13 +71,15 @@ const Widget = ({ callback, url, style }: Props) => {
         {page === Page.SignUp && (
           <>
             <SignUp callback={callback} api={apiRef.current} />
-            <button
-              className="mt-6 w-full py-[12px] rounded-[10px] text-lg font-[600] border-2"
-              style={{ borderColor: theme.ButtonBackground, color: theme.ButtonBackground }}
-              onClick={() => setPage(Page.SignIn)}
-            >
-              Sign in with an existing account
-            </button>
+            {!onlySignUp && (
+              <button
+                className="mt-6 w-full py-[12px] rounded-[10px] text-lg font-[600] border-2"
+                style={{ borderColor: theme.ButtonBackground, color: theme.ButtonBackground }}
+                onClick={() => setPage(Page.SignIn)}
+              >
+                Sign in with an existing account
+              </button>
+            )}
           </>
         )}
       </div>
