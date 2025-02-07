@@ -112,7 +112,7 @@ const SignUp = ({ callback, api }: Props) => {
       </h1>
       <SSOAuth signInApple={api.signInApple} signInGoogle={api.signInGoogle} title="Sign Up" />
       <Divisor />
-      <h1 className="text-[24px] mt-8 mb-4 text-center" style={{ color: theme.TextColor }}>
+      <h1 className="text-[24px] mt-4 mb-4 text-center" style={{ color: theme.TextColor }}>
         Sign up with E-mail
       </h1>
       <form onSubmit={submitLoginWithEmail}>
