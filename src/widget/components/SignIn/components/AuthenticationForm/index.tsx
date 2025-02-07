@@ -2,7 +2,7 @@ import { useCallback, useContext, useState } from 'react';
 
 import { AppleFilled, EyeFilled, EyeInvisibleFilled } from '@ant-design/icons';
 
-import { ReactComponent as GoogleIcon } from '../../../../assets/google-icon.svg';
+import GoogleIcon from '../../../../assets/google-icon.svg';
 import { ThemeContext } from '../../../../contexts/theme';
 
 type Props = {
@@ -41,7 +41,7 @@ const AuthenticationForm = ({
         className="w-full py-[12px] rounded-[10px] bg-[#fff] text-lg font-[600] text-[#333] flex justify-center items-center"
         onClick={signInGoogle}
       >
-        <GoogleIcon className="mr-2 h-[18px]" />
+        <img src={GoogleIcon} className="mr-2 h-[18px]" />
         Sign in with Google
       </button>
       <button
