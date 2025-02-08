@@ -40,6 +40,7 @@ export default YourComponent;
   return (
     <LoginWidget
       callback={handleCallback}
+      onlySignUp={false} // show login scren first
       url={url}
       style={{
         BackgroundColor: '#d6d6f1',
