@@ -3,7 +3,7 @@
 [![NPM Version](https://img.shields.io/npm/v/3thix-login-widget)](https://www.npmjs.com/package/3thix-login-widget)
 
 
-<img src="https://github.com/3thix/login-widget/blob/228f4e4722f5ae2d01d6b53fce470403d4410ade/preview.png" width="100%" height="auto" />
+<img src="https://github.com/3thix-integration/login-widget/blob/main/preview.png?raw=true" width="100%" height="auto" />
 
 ## Installing
 
