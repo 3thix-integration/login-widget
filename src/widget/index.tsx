@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { client } from './clients';
+import { SuccessUserMe } from './clients/types';
+import AcceptTerms from './components/AcceptTerms';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import { defaultTheme, ThemeContext, ThemeProps } from './contexts/theme';
@@ -29,22 +31,55 @@ type Props = {
 enum Page {
   SignIn = 1,
   SignUp,
+  AcceptTerms,
 }
 
-let token = getTokenFromURL();
+const token = getTokenFromURL();
 
 const Widget = ({ onlySignUp, callback, url, style }: Props) => {
   const [theme, setTheme] = useState<ThemeProps>(defaultTheme);
   const [page, setPage] = useState<Page>(onlySignUp ? Page.SignUp : Page.SignIn);
   const apiRef = useRef(client(url, window.location.href));
 
-  useEffect(() => {
-    if (token) {
+  const exec = useCallback(
+    async (token: string) => {
+      const { data, status } = await apiRef.current.userMe(token);
+      if (status !== 200) {
+        return;
+      }
+
+      const success = data as SuccessUserMe;
+      if (success.term_conditions_signed_at) {
+        callback(token);
+        deleteTokenFromURL();
+        return;
+      }
+
+      setPage(Page.AcceptTerms);
+    },
+    [callback]
+  );
+
+  const acceptTerms = useCallback(async () => {
+    if (!token) return;
+
+    const { status } = await apiRef.current.acceptTerms(token);
+    if (status === 204) {
       callback(token);
-      token = null;
       deleteTokenFromURL();
     }
   }, [callback]);
+
+  useEffect(() => {
+    if (token) {
+      const timeout = setTimeout(() => exec(token), 100);
+
+      // avoid duplicate calls
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [exec]);
 
   useEffect(() => {
     if (style) {
@@ -53,10 +88,10 @@ const Widget = ({ onlySignUp, callback, url, style }: Props) => {
     }
   }, [style]);
 
-  return (
-    <ThemeContext.Provider value={theme}>
-      <div className="card" style={{ backgroundColor: theme.CardBackground }}>
-        {page === Page.SignIn && (
+  const screen = useMemo(() => {
+    switch (page) {
+      case Page.SignIn:
+        return (
           <>
             <SignIn callback={callback} api={apiRef.current} />
             <button
@@ -67,8 +102,9 @@ const Widget = ({ onlySignUp, callback, url, style }: Props) => {
               Sign Up
             </button>
           </>
-        )}
-        {page === Page.SignUp && (
+        );
+      case Page.SignUp:
+        return (
           <>
             <SignUp callback={callback} api={apiRef.current} />
             {!onlySignUp && (
@@ -81,7 +117,18 @@ const Widget = ({ onlySignUp, callback, url, style }: Props) => {
               </button>
             )}
           </>
-        )}
+        );
+      case Page.AcceptTerms:
+        return <AcceptTerms acceptTermsCall={acceptTerms} />;
+      default:
+        return null;
+    }
+  }, [callback, onlySignUp, page, theme.ButtonBackground, acceptTerms]);
+
+  return (
+    <ThemeContext.Provider value={theme}>
+      <div className="card" style={{ backgroundColor: theme.CardBackground }}>
+        {screen}
       </div>
     </ThemeContext.Provider>
   );
