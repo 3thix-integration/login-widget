@@ -14,3 +14,7 @@ export type RespAPI<Success> = {
   status: number;
   data: Success | Error3thix;
 };
+
+export type SuccessUserMe = {
+  term_conditions_signed_at: string | null;
+};

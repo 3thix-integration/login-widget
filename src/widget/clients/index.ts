@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 
-import { Error3thix, LoginSuccess, PinSuccess, RespAPI } from './types';
+import { Error3thix, LoginSuccess, PinSuccess, RespAPI, SuccessUserMe } from './types';
 
 export function client(baseUrl: string, callbackUrl: string) {
   const instance = axios.create({
@@ -73,6 +73,26 @@ export function client(baseUrl: string, callbackUrl: string) {
     };
   };
 
+  const userMe = async (token: string): Promise<RespAPI<SuccessUserMe>> => {
+    const response = await instance.get('/entity/user/me', { headers: { Authorization: `Bearer ${token}` } });
+
+    return {
+      status: response.status,
+      data: response.data,
+    };
+  };
+
+  const acceptTerms = async (token: string): Promise<RespAPI<null>> => {
+    const response = await instance.put('/entity/user/terms-conditions/sign', null, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return {
+      status: response.status,
+      data: response.data,
+    };
+  };
+
   const changePassword = async (email: string): Promise<RespAPI<PinSuccess>> => {
     const response = await instance.post('/entity/user/password/update', { email });
 
@@ -113,5 +133,5 @@ export function client(baseUrl: string, callbackUrl: string) {
     window.location.replace(url.href);
   };
 
-  return { authPin, auth, changePassword, signUp, changePasswordPin, signInGoogle, signInApple };
+  return { authPin, auth, changePassword, signUp, changePasswordPin, signInGoogle, signInApple, userMe, acceptTerms };
 }
