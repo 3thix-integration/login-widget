@@ -1,137 +1,42 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
-import { client } from './clients';
-import { SuccessUserMe } from './clients/types';
-import AcceptTerms from './components/AcceptTerms';
-import SignIn from './components/SignIn';
-import SignUp from './components/SignUp';
-import { defaultTheme, ThemeContext, ThemeProps } from './contexts/theme';
-import { deleteTokenFromURL, getTokenFromURL } from './utils';
-
-import './style.css';
+import { useEffect } from "react";
 
 type Props = {
+  target: "PRODUCTION" | "SANDBOX";
   callback: (token: string) => void;
-  url: string;
-  onlySignUp?: boolean;
-  style?: {
-    TextColor?: string;
-    LinkColor?: string;
-    CardBackground?: string;
-    ButtonBackground?: string;
-    ButtonTextColor?: string;
-    InputLabelColor?: string;
-    InputBorderColor?: string;
-    InputTextColor?: string;
-    InputBackground?: string;
-    BackgroundColor?: string;
-  };
 };
 
-enum Page {
-  SignIn = 1,
-  SignUp,
-  AcceptTerms,
-}
+const productionUrl = "https://login.3thix.com/";
+const sandboxUrl = "https://sandbox-login.3thix.com/";
 
-const token = getTokenFromURL();
-
-const Widget = ({ onlySignUp, callback, url, style }: Props) => {
-  const [theme, setTheme] = useState<ThemeProps>(defaultTheme);
-  const [page, setPage] = useState<Page>(onlySignUp ? Page.SignUp : Page.SignIn);
-  const apiRef = useRef(client(url, window.location.href));
-
-  const exec = useCallback(
-    async (token: string) => {
-      const { data, status } = await apiRef.current.userMe(token);
-      if (status !== 200) {
-        return;
-      }
-
-      const success = data as SuccessUserMe;
-      if (success.term_conditions_signed_at) {
-        callback(token);
-        deleteTokenFromURL();
-        return;
-      }
-
-      setPage(Page.AcceptTerms);
-    },
-    [callback]
-  );
-
-  const acceptTerms = useCallback(async () => {
-    if (!token) return;
-
-    const { status } = await apiRef.current.acceptTerms(token);
-    if (status === 204) {
-      callback(token);
-      deleteTokenFromURL();
-    }
-  }, [callback]);
+const LoginWidget = ({ callback, target }: Props) => {
+  // const url = "http://localhost:3001";
+  const url = target === "PRODUCTION" ? productionUrl : sandboxUrl;
 
   useEffect(() => {
-    if (token) {
-      const timeout = setTimeout(() => exec(token), 100);
+    const handleMessage = (event: MessageEvent) => {
+      if (event.origin !== url) return;
 
-      // avoid duplicate calls
-      return () => {
-        clearTimeout(timeout);
-      };
-    }
-  }, [exec]);
+      if (event.data?.token) {
+        callback(event.data.token);
+      }
+      // TODO: implement sso login from url
+    };
 
-  useEffect(() => {
-    if (style) {
-      if (style.BackgroundColor) document.body.style.backgroundColor = style.BackgroundColor;
-      setTheme((old) => ({ ...old, ...style }));
-    }
-  }, [style]);
-
-  const screen = useMemo(() => {
-    switch (page) {
-      case Page.SignIn:
-        return (
-          <>
-            <SignIn callback={callback} api={apiRef.current} />
-            <button
-              className="mt-6 w-full py-[12px] rounded-[10px] text-lg font-[600] border-2"
-              style={{ borderColor: theme.ButtonBackground, color: theme.ButtonBackground }}
-              onClick={() => setPage(Page.SignUp)}
-            >
-              Sign Up
-            </button>
-          </>
-        );
-      case Page.SignUp:
-        return (
-          <>
-            <SignUp callback={callback} api={apiRef.current} />
-            {!onlySignUp && (
-              <button
-                className="mt-6 w-full py-[12px] rounded-[10px] text-lg font-[600] border-2"
-                style={{ borderColor: theme.ButtonBackground, color: theme.ButtonBackground }}
-                onClick={() => setPage(Page.SignIn)}
-              >
-                Sign in with an existing account
-              </button>
-            )}
-          </>
-        );
-      case Page.AcceptTerms:
-        return <AcceptTerms acceptTermsCall={acceptTerms} />;
-      default:
-        return null;
-    }
-  }, [callback, onlySignUp, page, theme.ButtonBackground, acceptTerms]);
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, [callback, url]);
 
   return (
-    <ThemeContext.Provider value={theme}>
-      <div className="card" style={{ backgroundColor: theme.CardBackground }}>
-        {screen}
-      </div>
-    </ThemeContext.Provider>
+    <iframe
+      src={url}
+      title="Ethix Login"
+      style={{
+        width: "100%",
+        height: "100vh",
+        border: "none",
+      }}
+    />
   );
 };
 
-export default Widget;
+export default LoginWidget;

@@ -18,15 +18,13 @@ yarn add 3thix-login-widget
 ```tsx
 import LoginWidget from '3thix-login-widget';
 
-const url = "https://sandbox-api.3thix.com"
-
 const YourComponent = () => {
-  function handleCallback(token:string) {
+  function handleCallback(token: string) {
     // ...
   }
 
   return (
-    <LoginWidget callback={handleCallback} url={url} />
+    <LoginWidget target='SANDBOX' callback={handleCallback} /> // target: PRODUCTION | SANDBOX
   )
 }
 
