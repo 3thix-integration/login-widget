@@ -3,6 +3,19 @@ import { deleteTokenFromURL, getTokenFromURL } from "./utils";
 
 type Props = {
   target: "PRODUCTION" | "SANDBOX";
+  onlySignUp?: boolean;
+  style?: {
+    TextColor?: string;
+    LinkColor?: string;
+    CardBackground?: string;
+    ButtonBackground?: string;
+    ButtonTextColor?: string;
+    InputLabelColor?: string;
+    InputBorderColor?: string;
+    InputTextColor?: string;
+    InputBackground?: string;
+    BackgroundColor?: string;
+  };
   callback: (token: string) => void;
 };
 
@@ -11,10 +24,16 @@ const token = getTokenFromURL();
 const productionUrl = "https://login.3thix.com/";
 const sandboxUrl = "https://sandbox-login.3thix.com/";
 
-const LoginWidget = ({ callback, target }: Props) => {
+const LoginWidget = ({ callback, target, onlySignUp, style }: Props) => {
   // const url = "http://localhost:3001";
   const url = target === "PRODUCTION" ? productionUrl : sandboxUrl;
-  const urlWithToken = !!token ? `${url}?token=${token}` : url;
+
+  const params = new URLSearchParams();
+  if (onlySignUp) params.append("onlySignUp", "true");
+  if (style) params.append("style", JSON.stringify(style));
+  if (token) params.append("token", token);
+
+  const urlWithParams = `${url}?${params.toString()}`;
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -40,7 +59,7 @@ const LoginWidget = ({ callback, target }: Props) => {
 
   return (
     <iframe
-      src={urlWithToken}
+      src={urlWithParams}
       title="Ethix Login"
       style={{
         width: "100%",
