@@ -21,12 +21,19 @@ type Props = {
 
 const token = getTokenFromURL();
 
-const productionUrl = "https://login.3thix.com/";
-const sandboxUrl = "https://sandbox-login.3thix.com/";
+function getBaseURL(env: string): string {
+  switch (env) {
+    case "PRODUCTION":
+      return "https://login.3thix.com/";
+    case "SANDBOX":
+      return "https://sandbox-login.3thix.com/";
+    default:
+      throw Error("environment not found");
+  }
+}
 
 const LoginWidget = ({ callback, target, onlySignUp, style }: Props) => {
-  // const url = "http://localhost:3001";
-  const url = target === "PRODUCTION" ? productionUrl : sandboxUrl;
+  const url = getBaseURL(target);
 
   const params = new URLSearchParams();
   if (onlySignUp) params.append("onlySignUp", "true");
