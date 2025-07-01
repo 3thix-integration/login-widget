@@ -16,7 +16,12 @@ type Props = {
     InputBackground?: string;
     BackgroundColor?: string;
   };
-  callback: (token: string) => void;
+  callback: (props: {
+    entityId: string;
+    name: string;
+    email: string;
+    token?: string;
+  }) => void;
 };
 
 const token = getTokenFromURL();
@@ -46,8 +51,13 @@ const LoginWidget = ({ callback, target, onlySignUp, style }: Props) => {
     const handleMessage = (event: MessageEvent) => {
       if (event.origin !== url) return;
 
-      if (event.data?.token) {
-        callback(event.data.token);
+      if (event.data?.entityId && event.data?.name && event.data?.email) {
+        callback({
+          entityId: event.data.entityId,
+          name: event.data.name,
+          email: event.data.email,
+          token: event.data?.token,
+        });
         deleteTokenFromURL();
         return;
       }
