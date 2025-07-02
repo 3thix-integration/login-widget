@@ -13,7 +13,12 @@ type Props = {
         InputBackground?: string;
         BackgroundColor?: string;
     };
-    callback: (token: string) => void;
+    callback: (props: {
+        entityId: string;
+        name: string;
+        email: string;
+        token?: string;
+    }) => void;
 };
 declare const LoginWidget: ({ callback, target, onlySignUp, style }: Props) => import("react/jsx-runtime").JSX.Element;
 export default LoginWidget;
