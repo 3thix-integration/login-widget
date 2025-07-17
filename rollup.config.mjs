@@ -5,31 +5,39 @@ import typescript from 'rollup-plugin-typescript2';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
+import dts from 'rollup-plugin-dts';
 
-export default {
-  input: 'src/widget/index.tsx',
-  output: [
-    {
-      file: 'dist/index.js',
-      format: 'cjs',
-      sourcemap: true,
-    },
-    {
-      file: 'dist/index.esm.js',
-      format: 'esm',
-      sourcemap: true,
-    },
-  ],
-  plugins: [
-    external(),
-    resolve(),
-    commonjs(),
-    json(),
-    typescript({
-      tsconfig: './tsconfig.json',
-      clean: true,
-      useTsconfigDeclarationDir: true,
-    }),
-    terser(),
-  ],
-};
+export default [
+  {
+    input: 'src/widget/index.tsx',
+    output: [
+      {
+        file: 'dist/index.js',
+        format: 'cjs',
+        sourcemap: true,
+      },
+      {
+        file: 'dist/index.esm.js',
+        format: 'esm',
+        sourcemap: true,
+      },
+    ],
+    plugins: [
+      external(),
+      resolve(),
+      commonjs(),
+      json(),
+      typescript({
+        tsconfig: './tsconfig.json',
+        clean: true,
+        useTsconfigDeclarationDir: true,
+      }),
+      terser(),
+    ],
+  },
+  {
+    input: './dist/widget/index.d.ts',
+    output: [{ file: 'dist/index.d.ts', format: 'es' }],
+    plugins: [dts()],
+  }
+];

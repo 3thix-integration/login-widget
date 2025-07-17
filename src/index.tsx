@@ -8,7 +8,11 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <LoginWidget
       target="SANDBOX"
       onlySignUp={false}
-      callback={(token) => alert(`token: ${token}`)}
+      callback={({ entityId, name, email, token }) =>
+        alert(
+          `id: ${entityId}; name: ${name}; email: ${email}; token: ${token}`
+        )
+      }
       style={{
         TextColor: "#F8F8F8",
         LinkColor: "#cdcfd2",
